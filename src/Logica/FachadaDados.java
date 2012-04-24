@@ -1,14 +1,16 @@
 package Logica;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class FachadaDados {
 	GerenciaDados gerenciaDados = new GerenciaDados();
 
 	public String getAtributoUsuario(String login, String atributo) throws Exception {
 		return gerenciaDados.getAtributoUsuario(login, atributo);
+	}
+	
+	public String getAtributoCarona(String idSessao, String atributo) throws Exception {
+		return gerenciaDados.getAtributoCarona(idSessao, atributo);
 	}
 
 	public void cadastraConta(Usuario pessoa) {
@@ -32,7 +34,15 @@ public class FachadaDados {
 		return gerenciaDados.isSenhaValida(login, senha);
 	}
 
-	public List<Integer> localizarCarona(String idSessao, String origem, String destino) {
-		return gerenciaDados.localizarCarona(idSessao, origem, destino);
+	public String localizarCarona(String idCarona, String origem, String destino) {
+		return gerenciaDados.localizarCarona(idCarona, origem, destino);
+	}
+
+	public void cadastrarCarona(Usuario usuario, ArrayList<Carona> caronas) {
+		gerenciaDados.cadastrarCarona(usuario, caronas);
+	}
+
+	public int getLinhasArquivo() throws Exception {
+		return gerenciaDados.getLinhasArquivo();
 	}
 }

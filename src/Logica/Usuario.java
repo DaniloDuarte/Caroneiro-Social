@@ -13,11 +13,14 @@ public class Usuario {
 	private String endereco;
 	private String telefone;
 	private ArrayList<Carona> caronas;
-	private FachadaDados gd;
+	private FachadaDados fachadaDados;
+	private Carona carona;
+	private String idCarona;
+	private int contador = 1;
 
 	public Usuario(String login, String senha, String nome, String endereco, String email) throws Exception {
-		gd = new FachadaDados();
-		if (gd.isEmailCadastrado(email)) {
+		fachadaDados = new FachadaDados();
+		if (fachadaDados.isEmailCadastrado(email)) {
 			throw new EasyAcceptException("Já existe um usuário com este email");
 		}
 		
@@ -31,13 +34,13 @@ public class Usuario {
 		setEndereco(endereco);
 		setEmail(email);
 		
-		gd.cadastraConta(this);
+		fachadaDados.cadastraConta(this);
 		this.caronas = new ArrayList<Carona>();
 	}
 	
 	public Usuario(String login, String nome, String endereco, String email) throws Exception {
-		gd = new FachadaDados();
-		if (gd.isEmailCadastrado(email)) {
+		fachadaDados = new FachadaDados();
+		if (fachadaDados.isEmailCadastrado(email)) {
 			throw new EasyAcceptException("Já existe um usuário com este email");
 		}
 		
@@ -50,15 +53,18 @@ public class Usuario {
 		setEndereco(endereco);
 		setEmail(email);
 		
-		gd.cadastraConta(this);
+		fachadaDados.cadastraConta(this);
 		this.caronas = new ArrayList<Carona>();
+		caronas.add(carona);
 	}
 
-//	public void cadastraCarona(String localOrigem, String localDestino, Date data, String horaDaSaida, int vagasDisponiveis){
-//		Carona carona = new Carona(localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
-//		caronas.add(carona);
-//		gd.cadastraCarona(this);
-//	}
+	public String cadastrarCarona(String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
+		carona = new Carona(localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
+		caronas.add(carona);
+		fachadaDados.cadastrarCarona(this, caronas);
+		
+		return idCarona;
+	}
 	
 	public boolean zerarSistema(){
 		caronas.clear();
@@ -123,4 +129,5 @@ public class Usuario {
 	public ArrayList<Carona> getCaronas() {
 		return caronas;
 	}
+
 }

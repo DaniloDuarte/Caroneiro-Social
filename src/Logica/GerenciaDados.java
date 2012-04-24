@@ -7,11 +7,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import easyaccept.EasyAcceptException;
 
@@ -40,11 +35,37 @@ public class GerenciaDados {
 		}
 	}
 
-	public void cadastraCarona(Usuario pessoa) {
-		// SE PESSOA JA TIVER CARONA CADASTRADA
+	public void cadastrarCarona(Usuario usuario, ArrayList<Carona> caronas) {
+		File arquivo;
+		arquivo = new File("caronas.txt");
+		FileOutputStream fos;
+		String texto;
 
-		// SE PESSOA NAO TIVER CARONA CADASTRADA
-
+		try {
+			fos = new FileOutputStream(arquivo, true);
+//			BufferedReader arq = new BufferedReader(
+//					new FileReader("caronas.txt"));
+//			String linha = arq.readLine();
+//			if (linha.split(";")[0].trim().equals(usuario.getLogin())){
+//				//TODO Se usuario cadastrado fazer algo.
+//			}
+			for (int i = 0; i < caronas.size(); i++){
+				
+				texto = usuario.getLogin() + ";" + caronas.get(i).getIdCarona() +
+				";" + caronas.get(i).getLocalOrigem() + ";" + caronas.get(i).getLocalDestino()
+				+ ";" + caronas.get(i).getData() + ";" + caronas.get(i).getHoraDaSaida() +
+				";" + caronas.get(i).getVagasDisponiveis() + "\n";
+				fos.write(texto.getBytes());
+				
+			}
+			fos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String getAtributoUsuario(String login, String atributo)
@@ -84,6 +105,40 @@ public class GerenciaDados {
 		return resposta;
 	}
 
+	public String getAtributoCarona(String idSessao, String atributo) throws Exception {
+		if (atributo == null || atributo.equals("")){
+			throw new EasyAcceptException("Atributo inválido");
+		}
+		if (!atributo.equals("origem") && !atributo.equals("destino") && !atributo.equals("data") && !atributo.equals("vagas")){
+			throw new EasyAcceptException("Atributo inexistente");
+		}
+		
+		String resposta = "";
+		BufferedReader arquivo = new BufferedReader(
+				new FileReader("caronas.txt"));
+
+		while (arquivo.ready()) {
+			// pega a linha
+			String linha = arquivo.readLine();
+			if (linha.split(";")[1].trim().equals(idSessao)) {
+				if (atributo.equals("origem")) {
+					resposta = linha.split(";")[2];
+				}else if (atributo.equals("destino")){
+					resposta = linha.split(";")[3];
+				}else if (atributo.equals("data")){
+					resposta = linha.split(";")[4];
+				}else if (atributo.equals("vagas")){
+					resposta = linha.split(";")[5];
+				}
+				break;
+			}
+		}
+		return resposta;
+		
+		
+		
+	}
+	
 	public boolean isEmailCadastrado(String email) throws Exception {
 		boolean resposta = false;
 		BufferedReader arquivo = new BufferedReader(
@@ -165,10 +220,25 @@ public class GerenciaDados {
 
 	}
 
- 	public List<Integer> localizarCarona(String idSessao, String origem, String destino) {
-		return new ArrayList<Integer>();
-		
+ 	public String localizarCarona(String idSessao, String origem, String destino) {
+		return "{}";
 	}
+
+	public int getLinhasArquivo() throws Exception {
+		int contador = 1;
+		BufferedReader arquivo = new BufferedReader(
+				new FileReader("caronas.txt"));
+			
+		while (arquivo.ready()) {
+			String a  = arquivo.readLine();
+			contador++;
+		}		
+		return contador;
+	}
+
+	
+
+	
 	
 	
 	

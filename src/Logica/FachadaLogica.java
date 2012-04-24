@@ -1,6 +1,7 @@
 package Logica;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -29,8 +30,11 @@ public class FachadaLogica {
 
 	public String getAtributoUsuario(String login, String atributo)
 			throws Exception {
-		// TODO Auto-generated method stub
 		return fachadaDados.getAtributoUsuario(login, atributo);
+	}
+	
+	public String getAtributoCarona(String idSessao, String atributo) throws Exception {
+		return fachadaDados.getAtributoCarona(idSessao, atributo);
 	}
 	
 	public boolean isLoginCadastrado(String login) throws Exception {
@@ -41,7 +45,14 @@ public class FachadaLogica {
 		return fachadaDados.isSenhaValida(login, senha);
 	}
 
-	public List<Integer> localizarCarona(String idSessao, String origem, String destino) {
-		return fachadaDados.localizarCarona(idSessao, origem, destino);
+	public String localizarCarona(String idCarona, String origem, String destino) {
+		return fachadaDados.localizarCarona(idCarona, origem, destino);
 	}
+
+	public void cadastrarCarona(String localOrigem,
+			String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception {
+		pessoa.cadastrarCarona(localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
+	}
+
+	
 }
