@@ -11,7 +11,7 @@ import easyaccept.Facade;
 public class Controlador {
 	private FachadaLogica fachadaLogica = new FachadaLogica();
 	private boolean sistemaAberto = false;
-	private String idSessao;
+	private int idSessao;
 	
 	public void criarUsuario(String login, String senha, String nome, String endereco, String email) throws Exception{
 		fachadaLogica.criarUsuario(login, senha, nome, endereco, email);
@@ -23,15 +23,15 @@ public class Controlador {
 		
 	}
 	
-	public int cadastrarCarona(String idSessao, String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
-		return fachadaLogica.cadastrarCarona(this.idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
+	public int cadastrarCarona(int idSessao, String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+		return fachadaLogica.cadastrarCarona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 	}
 	
 	public void zerarSistema(){
 		fachadaLogica.zerarSistema();
 	}
 	
-	public String abrirSessao(String login, String senha) throws Exception{
+	public int abrirSessao(String login, String senha) throws Exception{
 		//TODO ESCOLHER ONDE ISSO VAI FICAR!
 		if (login == null || login.equals("")){
 			throw new EasyAcceptException("Login inválido");
@@ -45,7 +45,7 @@ public class Controlador {
 			throw new EasyAcceptException("Login inválido");
 		}
 		sistemaAberto = true;
-		idSessao = "sessao" + login.substring(0, 1).toUpperCase() + login.substring(1, login.length());
+		//idSessao = "sessao" + login.substring(0, 1).toUpperCase() + login.substring(1, login.length());
 		return idSessao;
 	}
 	
@@ -67,5 +67,10 @@ public class Controlador {
 	
 	public int getLinhasArquivo() throws Exception {
 		return fachadaLogica.getLinhasArquivo();
+	}
+	
+	public String getTrajeto(int idCarona) throws Exception{
+		return fachadaLogica.getTrajeto(idCarona);
+		
 	}
 }

@@ -59,7 +59,7 @@ public class Usuario {
 		caronas.add(carona);
 	}
 
-	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+	public int cadastrarCarona(int idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
 		carona = new Carona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 		fachadaDados.cadastrarCarona(this, carona);
 		

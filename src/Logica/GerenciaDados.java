@@ -116,24 +116,22 @@ public class GerenciaDados {
 		String resposta = "";
 		BufferedReader arquivo = new BufferedReader(new FileReader(
 				"caronas.txt"));
-
+		String linha = "";
+		
 		while (arquivo.ready()) {
 			// pega a linha
-			String linha = arquivo.readLine();
-			if (linha.split(";")[1].trim().equals(idCarona)) {
-				System.out.println("ENTROU NO IF 1");
+			linha = arquivo.readLine();
+			if (Integer.parseInt(linha.split(";")[1]) == idCarona) {
 				if (atributo.equals("origem")) {
-					System.out.println("ENTROU NO IF 2");
 					resposta = linha.split(";")[2];
 				} else if (atributo.equals("destino")) {
-					System.out.println("ENTROU NO IF 3");
 					resposta = linha.split(";")[3];
 				} 
-				//else if (atributo.equals("data")) {
-					//resposta = linha.split(";")[4];
-				//} else if (atributo.equals("vagas")) {
-					//resposta = linha.split(";")[5];
-				//}
+				else if (atributo.equals("data")) {
+					resposta = linha.split(";")[4];
+				} else if (atributo.equals("vagas")) {
+					resposta = linha.split(";")[6];
+				}
 				break;
 			}
 		}
@@ -244,6 +242,23 @@ public class GerenciaDados {
 			contador++;
 		}
 		return contador;
+	}
+
+	public String getTrajeto(int idCarona) throws Exception {
+		String resposta = "";
+		BufferedReader arquivo = new BufferedReader(new FileReader(
+				"caronas.txt"));
+		String linha = "";
+		
+		while (arquivo.ready()) {
+			// pega a linha
+			linha = arquivo.readLine();
+			if (Integer.parseInt(linha.split(";")[1]) == idCarona) {
+					resposta = linha.split(";")[2] + " - " +linha.split(";")[3];
+				break;
+			}
+		}
+		return resposta;
 	}
 
 }

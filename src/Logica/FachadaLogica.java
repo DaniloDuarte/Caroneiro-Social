@@ -50,12 +50,16 @@ public class FachadaLogica {
 		return fachadaDados.localizarCarona(idCarona, origem, destino);
 	}
 
-	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception {
+	public int cadastrarCarona(int idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception {
 		return pessoa.cadastrarCarona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 	}
 
 	public int getLinhasArquivo() throws Exception {
 		return fachadaDados.getLinhasArquivo();
+	}
+
+	public String getTrajeto(int idCarona) throws Exception {
+		return fachadaDados.getTrajeto(idCarona);
 	}
 
 	

@@ -12,7 +12,7 @@ public class Carona {
 	private int vagasDisponiveis; 
 	private FachadaDados fachadaDados;
 	
-	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+	public Carona(int idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
 		setLocalOrigem(localOrigem);
 		setLocalDestino(localDestino);
 		setData(data);
