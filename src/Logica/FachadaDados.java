@@ -9,9 +9,9 @@ public class FachadaDados {
 		return gerenciaDados.getAtributoUsuario(login, atributo);
 	}
 	
-	public String getAtributoCarona(String idSessao, String atributo) throws Exception {
-		return gerenciaDados.getAtributoCarona(idSessao, atributo);
-	}
+//	public String getAtributoCarona(String idSessao, String atributo) throws Exception {
+	//	return gerenciaDados.getAtributoCarona(idSessao, atributo);
+	//}
 
 	public void cadastraConta(Usuario pessoa) {
 		gerenciaDados.cadastraConta(pessoa);
@@ -38,11 +38,15 @@ public class FachadaDados {
 		return gerenciaDados.localizarCarona(idCarona, origem, destino);
 	}
 
-	public void cadastrarCarona(Usuario usuario, ArrayList<Carona> caronas) {
-		gerenciaDados.cadastrarCarona(usuario, caronas);
+	public void cadastrarCarona(Usuario usuario, Carona carona) {
+		gerenciaDados.cadastrarCarona(usuario, carona);
 	}
 
 	public int getLinhasArquivo() throws Exception {
 		return gerenciaDados.getLinhasArquivo();
+	}
+
+	public String getAtributoCarona(int idCarona, String atributo) throws Exception {
+		return gerenciaDados.getAtributoCarona(idCarona, atributo);
 	}
 }

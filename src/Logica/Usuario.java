@@ -1,4 +1,5 @@
 package Logica;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -58,12 +59,14 @@ public class Usuario {
 		caronas.add(carona);
 	}
 
-	public String cadastrarCarona(String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
-		carona = new Carona(localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
-		caronas.add(carona);
-		fachadaDados.cadastrarCarona(this, caronas);
+	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+		carona = new Carona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
+		fachadaDados.cadastrarCarona(this, carona);
 		
-		return idCarona;
+		//caronas.add(carona);
+		
+		
+		return carona.getIdCarona();
 	}
 	
 	public boolean zerarSistema(){

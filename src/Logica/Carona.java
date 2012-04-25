@@ -1,33 +1,27 @@
 package Logica;
 
-import java.util.List;
-
-import java.sql.Time;
-import java.util.Date;
-
+import Util.IdCaronaSingleton;
 import easyaccept.EasyAcceptException;
 
-
 public class Carona {
-	private String idCarona;
+	private int idCarona;
 	private String localOrigem;
 	private String localDestino;
 	private String data;
 	private String horaDaSaida;
-	private String vagasDisponiveis; 
+	private int vagasDisponiveis; 
 	private FachadaDados fachadaDados;
 	
-	public Carona(String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
+	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
 		setLocalOrigem(localOrigem);
 		setLocalDestino(localDestino);
 		setData(data);
 		setHoraDaSaida(horaDaSaida);
 		setVagasDisponiveis(vagasDisponiveis);
 		
-		int contador = fachadaDados.getLinhasArquivo();
-		idCarona = "Carona" + Integer.toString(contador) + "ID";
+		idCarona = IdCaronaSingleton.getId();
 	}
-
+	
 	public String getLocalOrigem() {
 		return localOrigem;
 	}
@@ -73,28 +67,23 @@ public class Carona {
 		this.horaDaSaida = horaDaSaida;
 	}
 
-	public String getVagasDisponiveis() {
+	public int getVagasDisponiveis() {
 		return vagasDisponiveis;
 	}
 
-	public void setVagasDisponiveis(String vagasDisponiveis2) throws EasyAcceptException {
-		if (vagasDisponiveis2 == null || vagasDisponiveis2.equals("")){
-			throw new EasyAcceptException("Vaga inválida");
-		}
+	public void setVagasDisponiveis(int vagasDisponiveis2) throws EasyAcceptException {
+		//if (vagasDisponiveis2 == null || vagasDisponiveis2.equals("")){
+	//		throw new EasyAcceptException("Vaga inválida");
+	//	}
 		this.vagasDisponiveis = vagasDisponiveis2;
 	}
-	
-	public List<Integer> localizaCarona(String idSessao, String origem, String destino){
-		return null;
-		
-		
-		//TODO pesquisar no arquivo todas as caronas e depois mostrar as certas 
-		//TODO com todos os dados de forma organizada
+
+	public int getIdCarona() {
+		return idCarona;
 	}
 
-
-	public String getIdCarona() {
-		return idCarona;
+	public String getAtributoCarona(int idCarona, String atributo) throws Exception {
+		return fachadaDados.getAtributoCarona(idCarona, atributo);
 	}
 	
 }

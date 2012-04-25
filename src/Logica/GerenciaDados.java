@@ -35,7 +35,7 @@ public class GerenciaDados {
 		}
 	}
 
-	public void cadastrarCarona(Usuario usuario, ArrayList<Carona> caronas) {
+	public void cadastrarCarona(Usuario usuario, Carona carona) {
 		File arquivo;
 		arquivo = new File("caronas.txt");
 		FileOutputStream fos;
@@ -43,21 +43,19 @@ public class GerenciaDados {
 
 		try {
 			fos = new FileOutputStream(arquivo, true);
-//			BufferedReader arq = new BufferedReader(
-//					new FileReader("caronas.txt"));
-//			String linha = arq.readLine();
-//			if (linha.split(";")[0].trim().equals(usuario.getLogin())){
-//				//TODO Se usuario cadastrado fazer algo.
-//			}
-			for (int i = 0; i < caronas.size(); i++){
-				
-				texto = usuario.getLogin() + ";" + caronas.get(i).getIdCarona() +
-				";" + caronas.get(i).getLocalOrigem() + ";" + caronas.get(i).getLocalDestino()
-				+ ";" + caronas.get(i).getData() + ";" + caronas.get(i).getHoraDaSaida() +
-				";" + caronas.get(i).getVagasDisponiveis() + "\n";
-				fos.write(texto.getBytes());
-				
-			}
+			// BufferedReader arq = new BufferedReader(
+			// new FileReader("caronas.txt"));
+			// String linha = arq.readLine();
+			// if (linha.split(";")[0].trim().equals(usuario.getLogin())){
+			// //TODO Se usuario cadastrado fazer algo.
+			// }
+			texto = usuario.getLogin() + ";" + carona.getIdCarona() + ";"
+					+ carona.getLocalOrigem() + ";"
+					+ carona.getLocalDestino() + ";" + carona.getData()
+					+ ";" + carona.getHoraDaSaida() + ";"
+					+ carona.getVagasDisponiveis() + "\n";
+			fos.write(texto.getBytes());
+
 			fos.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -70,22 +68,22 @@ public class GerenciaDados {
 
 	public String getAtributoUsuario(String login, String atributo)
 			throws Exception {
-		if (login == null || login.equals("")){
+		if (login == null || login.equals("")) {
 			throw new EasyAcceptException("Login inválido");
 		}
-		
-		if (atributo == null || atributo.equals("")){
+
+		if (atributo == null || atributo.equals("")) {
 			throw new EasyAcceptException("Atributo inválido");
 		}
-		
-		if (!this.isLoginCadastrado(login)){
+
+		if (!this.isLoginCadastrado(login)) {
 			throw new EasyAcceptException("Usuário inexistente");
 		}
-		
-		if (!atributo.equals("nome") && !atributo.equals("endereco")){
+
+		if (!atributo.equals("nome") && !atributo.equals("endereco")) {
 			throw new EasyAcceptException("Atributo inexistente");
 		}
-		
+
 		String resposta = "";
 		BufferedReader arquivo = new BufferedReader(
 				new FileReader("contas.txt"));
@@ -105,40 +103,44 @@ public class GerenciaDados {
 		return resposta;
 	}
 
-	public String getAtributoCarona(String idSessao, String atributo) throws Exception {
-		if (atributo == null || atributo.equals("")){
+	public String getAtributoCarona(int idCarona, String atributo)
+			throws Exception {
+		if (atributo == null || atributo.equals("")) {
 			throw new EasyAcceptException("Atributo inválido");
 		}
-		if (!atributo.equals("origem") && !atributo.equals("destino") && !atributo.equals("data") && !atributo.equals("vagas")){
+		if (!atributo.equals("origem") && !atributo.equals("destino")
+				&& !atributo.equals("data") && !atributo.equals("vagas")) {
 			throw new EasyAcceptException("Atributo inexistente");
 		}
-		
+
 		String resposta = "";
-		BufferedReader arquivo = new BufferedReader(
-				new FileReader("caronas.txt"));
+		BufferedReader arquivo = new BufferedReader(new FileReader(
+				"caronas.txt"));
 
 		while (arquivo.ready()) {
 			// pega a linha
 			String linha = arquivo.readLine();
-			if (linha.split(";")[1].trim().equals(idSessao)) {
+			if (linha.split(";")[1].trim().equals(idCarona)) {
+				System.out.println("ENTROU NO IF 1");
 				if (atributo.equals("origem")) {
+					System.out.println("ENTROU NO IF 2");
 					resposta = linha.split(";")[2];
-				}else if (atributo.equals("destino")){
+				} else if (atributo.equals("destino")) {
+					System.out.println("ENTROU NO IF 3");
 					resposta = linha.split(";")[3];
-				}else if (atributo.equals("data")){
-					resposta = linha.split(";")[4];
-				}else if (atributo.equals("vagas")){
-					resposta = linha.split(";")[5];
-				}
+				} 
+				//else if (atributo.equals("data")) {
+					//resposta = linha.split(";")[4];
+				//} else if (atributo.equals("vagas")) {
+					//resposta = linha.split(";")[5];
+				//}
 				break;
 			}
 		}
 		return resposta;
-		
-		
-		
+
 	}
-	
+
 	public boolean isEmailCadastrado(String email) throws Exception {
 		boolean resposta = false;
 		BufferedReader arquivo = new BufferedReader(
@@ -172,6 +174,16 @@ public class GerenciaDados {
 		} catch (Exception e) {
 			e.getMessage();
 		}
+		
+		arquivo = new File("caronas.txt");
+		try {
+			fos = new FileOutputStream(arquivo, false);
+			fos.write("".getBytes());
+			fos.close();
+
+		} catch (Exception e) {
+			e.getMessage();
+		}
 	}
 
 	public boolean isLoginCadastrado(String login) throws Exception {
@@ -187,62 +199,51 @@ public class GerenciaDados {
 		}
 		return resposta;
 	}
-	
-	
-	public void abrirSessao(String login, String senha) throws EasyAcceptException{
-		//TODO ESCOLHER ONDE ISSO VAI FICAR!
-		if (login == null || login.equals("")){
+
+	public void abrirSessao(String login, String senha)
+			throws EasyAcceptException {
+		// TODO ESCOLHER ONDE ISSO VAI FICAR!
+		if (login == null || login.equals("")) {
 			throw new EasyAcceptException("Login inválido");
 		}
-		
-		
-		
+
 	}
 
 	public boolean isSenhaValida(String login, String senha) throws Exception {
 		boolean resposta = false;
-			BufferedReader arquivo = new BufferedReader(
-					new FileReader("contas.txt"));
-			while (arquivo.ready()) {
-				String linha = arquivo.readLine();
-				if (linha.split(";")[0].trim().equals(login)) {
-					if (linha.split(";").length == 5) {
-						if (linha.split(";")[1].trim().equals(senha)){
+		BufferedReader arquivo = new BufferedReader(
+				new FileReader("contas.txt"));
+		while (arquivo.ready()) {
+			String linha = arquivo.readLine();
+			if (linha.split(";")[0].trim().equals(login)) {
+				if (linha.split(";").length == 5) {
+					if (linha.split(";")[1].trim().equals(senha)) {
 						resposta = true;
 						break;
-						}
-					}else{
-						break;
 					}
-				}					
+				} else {
+					break;
+				}
 			}
+		}
 		return resposta;
 
 	}
 
- 	public String localizarCarona(String idSessao, String origem, String destino) {
+	public String localizarCarona(String idSessao, String origem, String destino) {
 		return "{}";
 	}
 
 	public int getLinhasArquivo() throws Exception {
 		int contador = 1;
-		BufferedReader arquivo = new BufferedReader(
-				new FileReader("caronas.txt"));
-			
+		BufferedReader arquivo = new BufferedReader(new FileReader(
+				"caronas.txt"));
+
 		while (arquivo.ready()) {
-			String a  = arquivo.readLine();
+			String a = arquivo.readLine();
 			contador++;
-		}		
+		}
 		return contador;
 	}
 
-	
-
-	
-	
-	
-	
-	
-	
-	
 }

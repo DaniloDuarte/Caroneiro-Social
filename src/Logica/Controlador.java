@@ -1,11 +1,17 @@
 package Logica;
 
+import java.sql.Time;
+import java.util.Date;
+
+import Util.IdCaronaSingleton;
+
 import easyaccept.EasyAcceptException;
 import easyaccept.Facade;
 
 public class Controlador {
 	private FachadaLogica fachadaLogica = new FachadaLogica();
 	private boolean sistemaAberto = false;
+	private String idSessao;
 	
 	public void criarUsuario(String login, String senha, String nome, String endereco, String email) throws Exception{
 		fachadaLogica.criarUsuario(login, senha, nome, endereco, email);
@@ -17,9 +23,8 @@ public class Controlador {
 		
 	}
 	
-	public void cadastrarCarona(String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
-		fachadaLogica.cadastrarCarona(localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
-		
+	public int cadastrarCarona(String idSessao, String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+		return fachadaLogica.cadastrarCarona(this.idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 	}
 	
 	public void zerarSistema(){
@@ -40,7 +45,7 @@ public class Controlador {
 			throw new EasyAcceptException("Login inválido");
 		}
 		sistemaAberto = true;
-		String idSessao = "sessao" + login.substring(0, 1).toUpperCase() + login.substring(1, login.length());
+		idSessao = "sessao" + login.substring(0, 1).toUpperCase() + login.substring(1, login.length());
 		return idSessao;
 	}
 	
@@ -48,7 +53,7 @@ public class Controlador {
 		return fachadaLogica.getAtributoUsuario(login, atributo);
 	}
 	
-	public String getAtributoCarona(String idCarona, String atributo) throws Exception{
+	public String getAtributoCarona(int idCarona, String atributo) throws Exception{
 		return fachadaLogica.getAtributoCarona(idCarona, atributo);
 	}
 	
@@ -60,10 +65,7 @@ public class Controlador {
 		return fachadaLogica.localizarCarona(idCarona, origem, destino);
 	}
 	
-	
-	
-	
-	
-	
-	
+	public int getLinhasArquivo() throws Exception {
+		return fachadaLogica.getLinhasArquivo();
+	}
 }

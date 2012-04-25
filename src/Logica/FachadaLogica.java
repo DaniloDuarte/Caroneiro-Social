@@ -1,5 +1,6 @@
 package Logica;
 
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -33,8 +34,8 @@ public class FachadaLogica {
 		return fachadaDados.getAtributoUsuario(login, atributo);
 	}
 	
-	public String getAtributoCarona(String idSessao, String atributo) throws Exception {
-		return fachadaDados.getAtributoCarona(idSessao, atributo);
+	public String getAtributoCarona(int idCarona, String atributo) throws Exception {
+		return fachadaDados.getAtributoCarona(idCarona, atributo);
 	}
 	
 	public boolean isLoginCadastrado(String login) throws Exception {
@@ -49,9 +50,12 @@ public class FachadaLogica {
 		return fachadaDados.localizarCarona(idCarona, origem, destino);
 	}
 
-	public void cadastrarCarona(String localOrigem,
-			String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception {
-		pessoa.cadastrarCarona(localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
+	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception {
+		return pessoa.cadastrarCarona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
+	}
+
+	public int getLinhasArquivo() throws Exception {
+		return fachadaDados.getLinhasArquivo();
 	}
 
 	
