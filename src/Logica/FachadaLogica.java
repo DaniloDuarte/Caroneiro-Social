@@ -9,8 +9,8 @@ import java.util.Set;
 public class FachadaLogica {
 	private Usuario pessoa;
 	private FachadaDados fachadaDados = new FachadaDados();
-	private Carona carona;
-
+	private Perfil perfil = new Perfil();
+	
 	public void criarUsuario(String login, String senha, String nome,
 			String endereco, String email) throws Exception {
 
@@ -60,6 +60,14 @@ public class FachadaLogica {
 
 	public String getTrajeto(int idCarona) throws Exception {
 		return fachadaDados.getTrajeto(idCarona);
+	}
+
+	public int abrirSessao(String login, String senha) throws Exception {
+		return perfil.abrirSessao(login, senha);
+	}
+
+	public String getCarona(int idCarona) throws Exception {
+		return fachadaDados.getCarona(idCarona);
 	}
 
 	

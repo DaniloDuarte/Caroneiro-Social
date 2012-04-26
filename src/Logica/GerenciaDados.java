@@ -260,5 +260,21 @@ public class GerenciaDados {
 		}
 		return resposta;
 	}
+	
+
+	public String getCarona(int idCarona) throws Exception{
+		BufferedReader arquivo = new BufferedReader(
+				new FileReader("caronas.txt"));
+		String resposta = "";
+		while (arquivo.ready()) {
+			String linha = arquivo.readLine();
+			if (Integer.parseInt(linha.split(";")[1]) == idCarona){
+				resposta = (linha.split(";")[2].trim().toString()) + " para " + (linha.split(";")[3].trim().toString()) +
+				", no dia " + (linha.split(";")[4].trim().toString()) + ", as " + (linha.split(";")[5].trim().toString());
+			}
+		}
+		return resposta;
+	}
+	
 
 }

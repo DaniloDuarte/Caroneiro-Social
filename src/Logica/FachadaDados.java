@@ -53,4 +53,8 @@ public class FachadaDados {
 	public String getTrajeto(int idCarona) throws Exception {
 		return gerenciaDados.getTrajeto(idCarona);
 	}
+
+	public String getCarona(int idCarona) throws Exception {
+		return gerenciaDados.getCarona(idCarona);
+	}
 }
