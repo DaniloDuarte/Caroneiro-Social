@@ -1,10 +1,21 @@
 package Util;
 
 public class IdCaronaSingleton {
-
-	private static int idCarona = 0;
+	
+	private static IdCaronaSingleton singleton = null;
+	private static int idCarona;
+	
+	private IdCaronaSingleton(){
+		idCarona = 1;
+	}
 
 	public static int getId(){
-		return ++idCarona;
+		if (singleton == null){
+			singleton = new IdCaronaSingleton();
+		}else{
+			idCarona++;
+		}
+		
+		return idCarona;
 	}
 }
