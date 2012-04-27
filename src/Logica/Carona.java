@@ -11,8 +11,14 @@ public class Carona {
 	private String horaDaSaida;
 	private int vagasDisponiveis; 
 	private FachadaDados fachadaDados;
+	private Perfil perfil = new Perfil();
 	
-	public Carona(int idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+		if (idSessao == null || idSessao.equals("")){
+			throw new EasyAcceptException("Sessão inválida");
+		}
+		perfil.idSessaoCadastrado(idSessao);
+		
 		setLocalOrigem(localOrigem);
 		setLocalDestino(localDestino);
 		setData(data);
@@ -85,5 +91,6 @@ public class Carona {
 	public String getAtributoCarona(int idCarona, String atributo) throws Exception {
 		return fachadaDados.getAtributoCarona(idCarona, atributo);
 	}
+	
 	
 }

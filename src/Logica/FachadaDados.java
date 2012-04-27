@@ -1,7 +1,5 @@
 package Logica;
 
-import java.util.ArrayList;
-
 public class FachadaDados {
 	GerenciaDados gerenciaDados = new GerenciaDados();
 
@@ -34,8 +32,8 @@ public class FachadaDados {
 		return gerenciaDados.isSenhaValida(login, senha);
 	}
 
-	public String localizarCarona(String idCarona, String origem, String destino) {
-		return gerenciaDados.localizarCarona(idCarona, origem, destino);
+	public String localizarCarona(int idSessao, String origem, String destino) throws Exception {
+		return gerenciaDados.localizarCarona(idSessao, origem, destino);
 	}
 
 	public void cadastrarCarona(Usuario usuario, Carona carona) {
@@ -52,5 +50,13 @@ public class FachadaDados {
 
 	public String getTrajeto(int idCarona) throws Exception {
 		return gerenciaDados.getTrajeto(idCarona);
+	}
+
+	public String getCarona(int idCarona) throws Exception {
+		return gerenciaDados.getCarona(idCarona);
+	}
+
+	public void idSessaoCadastrado(String idSessao) throws Exception {
+		gerenciaDados.idSessaoCadastrado(idSessao);
 	}
 }
