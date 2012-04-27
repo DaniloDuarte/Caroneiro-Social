@@ -34,8 +34,8 @@ public class FachadaDados {
 		return gerenciaDados.isSenhaValida(login, senha);
 	}
 
-	public String localizarCarona(String idCarona, String origem, String destino) {
-		return gerenciaDados.localizarCarona(idCarona, origem, destino);
+	public String localizarCarona(int idSessao, String origem, String destino) throws Exception {
+		return gerenciaDados.localizarCarona(idSessao, origem, destino);
 	}
 
 	public void cadastrarCarona(Usuario usuario, Carona carona) {

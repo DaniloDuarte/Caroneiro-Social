@@ -3,6 +3,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
+import Util.IdSessaoSingleton;
+
 import easyaccept.EasyAcceptException;
 
 public class Usuario {
@@ -18,6 +20,8 @@ public class Usuario {
 	private Carona carona;
 	private String idCarona;
 	private int contador = 1;
+	private Perfil perfil;
+	private int idUsuario;
 
 	public Usuario(String login, String senha, String nome, String endereco, String email) throws Exception {
 		fachadaDados = new FachadaDados();
@@ -37,6 +41,7 @@ public class Usuario {
 		
 		fachadaDados.cadastraConta(this);
 		this.caronas = new ArrayList<Carona>();
+		idUsuario = IdSessaoSingleton.getId();
 	}
 	
 	public Usuario(String login, String nome, String endereco, String email) throws Exception {
@@ -131,6 +136,10 @@ public class Usuario {
 
 	public ArrayList<Carona> getCaronas() {
 		return caronas;
+	}
+	
+	public int getIdSessao(){
+		return idUsuario;
 	}
 
 }

@@ -42,7 +42,7 @@ public class Controlador {
 		return fachadaLogica.getAtributoCarona(idCarona, atributo);
 	}
 	
-	public String localizarCarona(String idCarona, String origem, String destino){
+	public String localizarCarona(int idCarona, String origem, String destino) throws Exception{
 		return fachadaLogica.localizarCarona(idCarona, origem, destino);
 	}
 	
