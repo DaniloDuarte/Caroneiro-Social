@@ -270,23 +270,6 @@ public class GerenciaDados {
 		}
 		if (texto != "{") texto = texto.substring(0, texto.length() - 1);
 		texto += "}";
-		// if (Integer.parseInt(linha.split(";")[0]) == idSessao){
-		// texto= "{}";
-		// if ((linha.split(";")[3].trim().equals(origem))){
-		// if ((linha.split(";")[4].trim().equals(destino))){
-		// texto = "{" + linha.split(";")[2] + "}";
-		// }else{
-		//
-		// }
-		// }else{
-		//
-		// }
-		// texto = "{" + linha.split(";")[1].trim().equals(destino);
-		// }else{
-		// texto = "{}";
-		// }
-		// }
-		System.out.println(texto);
 		return texto;
 	}
 
