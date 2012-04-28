@@ -231,6 +231,14 @@ public class GerenciaDados {
 
 	public String localizarCarona(int idSessao, String origem, String destino)
 			throws Exception {
+		
+		if (!destino.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")){
+			throw new EasyAcceptException("Destino inválido");
+		}
+		if (!origem.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")){
+			throw new EasyAcceptException("Origem inválida");
+		}
+		
 		String texto = "{";
 		BufferedReader arquivo = new BufferedReader(new FileReader(
 				"caronas.txt"));

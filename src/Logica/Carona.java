@@ -21,7 +21,7 @@ public class Carona {
 	private FachadaDados fachadaDados;
 	private Perfil perfil = new Perfil();
 	
-	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception{
 		if (idSessao == null || idSessao.equals("")){
 			throw new EasyAcceptException("Sessão inválida");
 		}
