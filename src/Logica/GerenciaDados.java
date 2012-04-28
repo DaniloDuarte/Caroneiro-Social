@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -237,7 +238,7 @@ public class GerenciaDados {
 		while (arquivo.ready()) {
 			String linha = arquivo.readLine();
 			Date data = new Date();
-			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+			DateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 			formatador.format(data);
 			Date minhaData = formatador.parse(linha.split(";")[5].trim()
 					.toString());
