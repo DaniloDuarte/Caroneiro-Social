@@ -34,8 +34,8 @@ public class Controlador {
 		return fachadaLogica.getAtributoCarona(idCarona, atributo);
 	}
 	
-	public String localizarCarona(int idCarona, String origem, String destino) throws Exception{
-		return fachadaLogica.localizarCarona(idCarona, origem, destino);
+	public String localizarCarona(String idSessao, String origem, String destino) throws Exception{
+		return fachadaLogica.localizarCarona(idSessao, origem, destino);
 	}
 	
 	public int getLinhasArquivo() throws Exception {

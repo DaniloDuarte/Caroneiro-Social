@@ -40,8 +40,8 @@ public class FachadaLogica {
 		return fachadaDados.isSenhaValida(login, senha);
 	}
 
-	public String localizarCarona(int idCarona, String origem, String destino) throws Exception {
-		return fachadaDados.localizarCarona(idCarona, origem, destino);
+	public String localizarCarona(String idSessao, String origem, String destino) throws Exception {
+		return fachadaDados.localizarCarona(idSessao, origem, destino);
 	}
 
 	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception {

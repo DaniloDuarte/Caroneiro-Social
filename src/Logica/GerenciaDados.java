@@ -51,7 +51,7 @@ public class GerenciaDados {
 			// if (linha.split(";")[0].trim().equals(usuario.getLogin())){
 			// //TODO Se usuario cadastrado fazer algo.
 			// }
-			texto = usuario.getIdSessao() + ";" + usuario.getLogin() + ";"
+			texto = Perfil.getIdSessao() + ";" + usuario.getLogin() + ";"
 					+ carona.getIdCarona() + ";" + carona.getLocalOrigem()
 					+ ";" + carona.getLocalDestino() + ";" + carona.getData()
 					+ ";" + carona.getHoraDaSaida() + ";"
@@ -229,7 +229,7 @@ public class GerenciaDados {
 
 	}
 
-	public String localizarCarona(int idSessao, String origem, String destino)
+	public String localizarCarona(String idSessao, String origem, String destino)
 			throws Exception {
 		
 		if (!destino.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")){
@@ -250,7 +250,7 @@ public class GerenciaDados {
 			formatador.format(data);
 			Date minhaData = formatador.parse(linha.split(";")[5].trim()
 					.toString());
-			if (Integer.parseInt(linha.split(";")[0]) == idSessao) {
+			if (linha.split(";")[0].equals(idSessao)) {
 				if (origem.equals("")) {
 					if (destino.equals("")) {
 						if (minhaData.after(data)) {

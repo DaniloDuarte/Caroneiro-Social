@@ -33,10 +33,6 @@ public class Carona {
 			throw new EasyAcceptException("Hora inválida");
 		}
 		
-		if (Integer.toString(vagasDisponiveis) == null){
-			throw new EasyAcceptException("Vaga inválida");
-		}
-		
 		perfil.idSessaoCadastrado(idSessao);
 		
 		setLocalOrigem(localOrigem);

@@ -32,7 +32,7 @@ public class FachadaDados {
 		return gerenciaDados.isSenhaValida(login, senha);
 	}
 
-	public String localizarCarona(int idSessao, String origem, String destino) throws Exception {
+	public String localizarCarona(String idSessao, String origem, String destino) throws Exception {
 		return gerenciaDados.localizarCarona(idSessao, origem, destino);
 	}
 

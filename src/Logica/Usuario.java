@@ -15,7 +15,7 @@ public class Usuario {
 	private ArrayList<Carona> caronas;
 	private FachadaDados fachadaDados;
 	private Carona carona;
-	private int idSessao;
+//	private int idSessao;
 
 	public Usuario(String login, String senha, String nome, String endereco, String email) throws Exception {
 		fachadaDados = new FachadaDados();
@@ -35,7 +35,7 @@ public class Usuario {
 		
 		fachadaDados.cadastraConta(this);
 		this.caronas = new ArrayList<Carona>();
-		idSessao = IdSessaoSingleton.getId();
+	//	idSessao = 0;//IdSessaoSingleton.getId();
 	}
 	
 	public Usuario(String login, String nome, String endereco, String email) throws Exception {
@@ -59,10 +59,6 @@ public class Usuario {
 	}
 
 	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception{
-		if (vagasDisponiveis == null){
-			throw new EasyAcceptException("Vaga inválida");
-		}
-		
 		carona = new Carona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 		fachadaDados.cadastrarCarona(this, carona);
 		
@@ -133,8 +129,8 @@ public class Usuario {
 		return caronas;
 	}
 	
-	public int getIdSessao(){
-		return idSessao;
-	}
+//	public int getIdSessao(){
+//		return idSessao;
+//	}
 
 }
