@@ -51,7 +51,7 @@ public class GerenciaDados {
 			// if (linha.split(";")[0].trim().equals(usuario.getLogin())){
 			// //TODO Se usuario cadastrado fazer algo.
 			// }
-			texto = usuario.getIdSessao() + ";" + usuario.getLogin() + ";"
+			texto = Sistema.getIdSessao() + ";" + usuario.getLogin() + ";"
 					+ carona.getIdCarona() + ";" + carona.getLocalOrigem()
 					+ ";" + carona.getLocalDestino() + ";" + carona.getData()
 					+ ";" + carona.getHoraDaSaida() + ";"
@@ -105,8 +105,16 @@ public class GerenciaDados {
 		return resposta;
 	}
 
-	public String getAtributoCarona(int idCarona, String atributo)
+	public String getAtributoCarona(String idCarona, String atributo)
 			throws Exception {
+		if (idCarona == null || idCarona.equals("")) {
+			throw new EasyAcceptException("Identificador do carona é inválido");
+		}
+
+		if (!idCaronaCadastrado(idCarona)) {
+			throw new EasyAcceptException("Item inexistente");
+		}
+
 		if (atributo == null || atributo.equals("")) {
 			throw new EasyAcceptException("Atributo inválido");
 		}
@@ -123,7 +131,7 @@ public class GerenciaDados {
 		while (arquivo.ready()) {
 			// pega a linha
 			linha = arquivo.readLine();
-			if (Integer.parseInt(linha.split(";")[2]) == idCarona) {
+			if (linha.split(";")[2].equals(idCarona)) {
 				if (atributo.equals("origem")) {
 					resposta = linha.split(";")[3];
 				} else if (atributo.equals("destino")) {
@@ -140,6 +148,20 @@ public class GerenciaDados {
 
 	}
 
+	private boolean idCaronaCadastrado(String idCarona) throws Exception {
+		boolean resposta = false;
+		BufferedReader arquivo = new BufferedReader(new FileReader(
+				"caronas.txt"));
+
+		while (arquivo.ready()) {
+			String linha = arquivo.readLine();
+			if (linha.split(";")[2].trim().equals(idCarona)) {
+				resposta = true;
+			}
+		}
+		return resposta;
+	}
+
 	public boolean isEmailCadastrado(String email) throws Exception {
 		boolean resposta = false;
 		BufferedReader arquivo = new BufferedReader(
@@ -147,14 +169,8 @@ public class GerenciaDados {
 
 		while (arquivo.ready()) {
 			String linha = arquivo.readLine();
-			if (linha.split(";").length == 5) {
-				if (linha.split(";")[4].trim().equals(email)) {
-					resposta = true;
-				}
-			} else {
-				if (linha.split(";")[3].trim().equals(email)) {
-					resposta = true;
-				}
+			if (linha.split(";")[4].trim().equals(email)) {
+				resposta = true;
 			}
 		}
 		return resposta;
@@ -215,12 +231,8 @@ public class GerenciaDados {
 		while (arquivo.ready()) {
 			String linha = arquivo.readLine();
 			if (linha.split(";")[0].trim().equals(login)) {
-				if (linha.split(";").length == 5) {
-					if (linha.split(";")[1].trim().equals(senha)) {
-						resposta = true;
-						break;
-					}
-				} else {
+				if (linha.split(";")[1].trim().equals(senha)) {
+					resposta = true;
 					break;
 				}
 			}
@@ -229,16 +241,16 @@ public class GerenciaDados {
 
 	}
 
-	public String localizarCarona(int idSessao, String origem, String destino)
+	public String localizarCarona(String idSessao, String origem, String destino)
 			throws Exception {
-		
-		if (!destino.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")){
+
+		if (!destino.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")) {
 			throw new EasyAcceptException("Destino inválido");
 		}
-		if (!origem.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")){
+		if (!origem.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")) {
 			throw new EasyAcceptException("Origem inválida");
 		}
-		
+
 		String texto = "{";
 		BufferedReader arquivo = new BufferedReader(new FileReader(
 				"caronas.txt"));
@@ -250,31 +262,33 @@ public class GerenciaDados {
 			formatador.format(data);
 			Date minhaData = formatador.parse(linha.split(";")[5].trim()
 					.toString());
-			if (Integer.parseInt(linha.split(";")[0]) == idSessao) {
+			if (linha.split(";")[0].equals(idSessao)) {
 				if (origem.equals("")) {
 					if (destino.equals("")) {
 						if (minhaData.after(data)) {
 							texto += linha.split(";")[2] + ",";
 						}
 					} else {
-						if(linha.split(";")[4].trim().equals(destino)){
+						if (linha.split(";")[4].trim().equals(destino)) {
 							texto += linha.split(";")[2] + ",";
 						}
 					}
 				} else {
-					if(destino.equals("")){
-						if(linha.split(";")[3].trim().equals(origem)){
+					if (destino.equals("")) {
+						if (linha.split(";")[3].trim().equals(origem)) {
 							texto += linha.split(";")[2] + ",";
 						}
 					} else {
-						if(linha.split(";")[3].trim().equals(origem) && linha.split(";")[4].trim().equals(destino)){
+						if (linha.split(";")[3].trim().equals(origem)
+								&& linha.split(";")[4].trim().equals(destino)) {
 							texto += linha.split(";")[2] + ",";
 						}
 					}
 				}
 			}
 		}
-		if (texto != "{") texto = texto.substring(0, texto.length() - 1);
+		if (texto != "{")
+			texto = texto.substring(0, texto.length() - 1);
 		texto += "}";
 		return texto;
 	}
@@ -291,7 +305,15 @@ public class GerenciaDados {
 		return contador;
 	}
 
-	public String getTrajeto(int idCarona) throws Exception {
+	public String getTrajeto(String idCarona) throws Exception {
+		if (idCarona == null) {
+			throw new EasyAcceptException("Trajeto Inválido");
+		}
+
+		if (!idCaronaCadastrado(idCarona)) {
+			throw new EasyAcceptException("Trajeto Inexistente");
+		}
+
 		String resposta = "";
 		BufferedReader arquivo = new BufferedReader(new FileReader(
 				"caronas.txt"));
@@ -300,7 +322,7 @@ public class GerenciaDados {
 		while (arquivo.ready()) {
 			// pega a linha
 			linha = arquivo.readLine();
-			if (Integer.parseInt(linha.split(";")[2]) == idCarona) {
+			if (linha.split(";")[2].equals(idCarona)) {
 				resposta = linha.split(";")[3] + " - " + linha.split(";")[4];
 				break;
 			}
@@ -308,13 +330,21 @@ public class GerenciaDados {
 		return resposta;
 	}
 
-	public String getCarona(int idCarona) throws Exception {
+	public String getCarona(String idCarona) throws Exception {
+		if (idCarona == null) {
+			throw new EasyAcceptException("Carona Inválida");
+		}
+
+		if (!idCaronaCadastrado(idCarona)) {
+			throw new EasyAcceptException("Carona Inexistente");
+		}
+
 		BufferedReader arquivo = new BufferedReader(new FileReader(
 				"caronas.txt"));
 		String resposta = "";
 		while (arquivo.ready()) {
 			String linha = arquivo.readLine();
-			if (Integer.parseInt(linha.split(";")[2]) == idCarona) {
+			if (linha.split(";")[2].equals(idCarona)) {
 				resposta = (linha.split(";")[3].trim().toString()) + " para "
 						+ (linha.split(";")[4].trim().toString()) + ", no dia "
 						+ (linha.split(";")[5].trim().toString()) + ", as "
@@ -327,20 +357,20 @@ public class GerenciaDados {
 	public void idSessaoCadastrado(String idSessao) throws Exception {
 		BufferedReader arquivo = new BufferedReader(new FileReader(
 				"caronas.txt"));
-		boolean idEncontrado = true;
+		boolean idEncontrado = false;
 		boolean arquivoVazio = true;
-		
-		while (arquivo.ready()){
+
+		while (arquivo.ready()) {
 			arquivoVazio = false;
 			String linha = arquivo.readLine();
 			if (linha.split(";")[0].equals(idSessao)) {
-				idEncontrado = false;
+				idEncontrado = true;
 				break;
 			}
 		}
-		
-		if (!idEncontrado){
-			if (!arquivoVazio){
+
+		if (!idEncontrado) {
+			if (!arquivoVazio) {
 				throw new EasyAcceptException("Sessão inexistente");
 			}
 		}

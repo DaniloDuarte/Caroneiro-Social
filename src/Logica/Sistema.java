@@ -3,10 +3,10 @@ package Logica;
 import Util.IdSessaoSingleton;
 import easyaccept.EasyAcceptException;
 
-public class Perfil {
+public class Sistema {
 	private FachadaDados fachadaDados = new FachadaDados();
 	private boolean sistemaAberto = false;
-	private int idSessao = 0;
+	private static int idSessao = 0;
 
 	public int abrirSessao(String login, String senha) throws Exception {
 		if (login == null || login.equals("")) {
@@ -23,7 +23,7 @@ public class Perfil {
 		sistemaAberto = true;
 		// idSessao = "sessao" + login.substring(0, 1).toUpperCase() +
 		// login.substring(1, login.length());
-		return idSessao++;
+		return ++idSessao;
 		
 		//TODO RESOLVER O PROBLEMA DO SINGLETON
 		//this.idSessao = IdSessaoSingleton.getId();
@@ -42,4 +42,11 @@ public class Perfil {
 		fachadaDados.idSessaoCadastrado(idSessao);
 	}
 
+	protected static int getIdSessao(){
+		return idSessao;
+	}
+	
+	public void encerrarSessao(String login){
+		sistemaAberto = false;
+	}
 }

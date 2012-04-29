@@ -1,1 +1,2 @@
 mark;m@rk;Mark Zuckerberg;Palo Alto, California;mark@facebook.com
+bill;billz@o;William Henry Gates III;Medina, Washington;billzin@gmail.com

@@ -7,10 +7,6 @@ public class FachadaDados {
 		return gerenciaDados.getAtributoUsuario(login, atributo);
 	}
 	
-//	public String getAtributoCarona(String idSessao, String atributo) throws Exception {
-	//	return gerenciaDados.getAtributoCarona(idSessao, atributo);
-	//}
-
 	public void cadastraConta(Usuario pessoa) {
 		gerenciaDados.cadastraConta(pessoa);
 	}
@@ -21,7 +17,6 @@ public class FachadaDados {
 
 	public void zerarSistema() {
 		gerenciaDados.zerarSistema();
-		
 	}
 
 	public boolean isLoginCadastrado(String login) throws Exception {
@@ -32,7 +27,7 @@ public class FachadaDados {
 		return gerenciaDados.isSenhaValida(login, senha);
 	}
 
-	public String localizarCarona(int idSessao, String origem, String destino) throws Exception {
+	public String localizarCarona(String idSessao, String origem, String destino) throws Exception {
 		return gerenciaDados.localizarCarona(idSessao, origem, destino);
 	}
 
@@ -44,15 +39,15 @@ public class FachadaDados {
 		return gerenciaDados.getLinhasArquivo();
 	}
 
-	public String getAtributoCarona(int idCarona, String atributo) throws Exception {
+	public String getAtributoCarona(String idCarona, String atributo) throws Exception {
 		return gerenciaDados.getAtributoCarona(idCarona, atributo);
 	}
 
-	public String getTrajeto(int idCarona) throws Exception {
+	public String getTrajeto(String idCarona) throws Exception {
 		return gerenciaDados.getTrajeto(idCarona);
 	}
 
-	public String getCarona(int idCarona) throws Exception {
+	public String getCarona(String idCarona) throws Exception {
 		return gerenciaDados.getCarona(idCarona);
 	}
 
