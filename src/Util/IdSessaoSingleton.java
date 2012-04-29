@@ -12,7 +12,11 @@ public class IdSessaoSingleton {
 	public static int getId(){
 		if (singleton == null){
 			singleton = new IdSessaoSingleton();
-		}else{
+		}
+		else if(idSessao == 28){
+			idSessao++;
+		}
+		else{
 			idSessao++;
 		}
 		

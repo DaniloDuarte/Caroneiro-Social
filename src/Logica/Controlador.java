@@ -1,13 +1,5 @@
 package Logica;
 
-import java.sql.Time;
-import java.util.Date;
-
-import Util.IdCaronaSingleton;
-
-import easyaccept.EasyAcceptException;
-import easyaccept.Facade;
-
 public class Controlador {
 	private FachadaLogica fachadaLogica = new FachadaLogica();
 	
@@ -22,7 +14,7 @@ public class Controlador {
 		
 	}
 	
-	public int cadastrarCarona(int idSessao, String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+	public int cadastrarCarona(String idSessao, String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception{
 		return fachadaLogica.cadastrarCarona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 	}
 	
@@ -56,5 +48,9 @@ public class Controlador {
 	
 	public String getCarona(int idCarona) throws Exception{
 		return fachadaLogica.getCarona(idCarona);
+	}
+	
+	public boolean encerrarSistema(){
+		return fachadaLogica.encerrarSistema();
 	}
 }

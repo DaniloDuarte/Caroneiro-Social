@@ -1,15 +1,13 @@
 package Logica;
 
-import java.awt.image.DataBuffer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import easyaccept.EasyAcceptException;
@@ -233,6 +231,14 @@ public class GerenciaDados {
 
 	public String localizarCarona(int idSessao, String origem, String destino)
 			throws Exception {
+		
+		if (!destino.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")){
+			throw new EasyAcceptException("Destino inválido");
+		}
+		if (!origem.matches("^[ a-zA-Z ã á â é ê i í ó õ ô ú]*$")){
+			throw new EasyAcceptException("Origem inválida");
+		}
+		
 		String texto = "{";
 		BufferedReader arquivo = new BufferedReader(new FileReader(
 				"caronas.txt"));
@@ -240,7 +246,7 @@ public class GerenciaDados {
 		while (arquivo.ready()) {
 			String linha = arquivo.readLine();
 			Date data = new Date();
-			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+			DateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 			formatador.format(data);
 			Date minhaData = formatador.parse(linha.split(";")[5].trim()
 					.toString());
@@ -316,6 +322,28 @@ public class GerenciaDados {
 			}
 		}
 		return resposta;
+	}
+
+	public void idSessaoCadastrado(String idSessao) throws Exception {
+		BufferedReader arquivo = new BufferedReader(new FileReader(
+				"caronas.txt"));
+		boolean idEncontrado = true;
+		boolean arquivoVazio = true;
+		
+		while (arquivo.ready()){
+			arquivoVazio = false;
+			String linha = arquivo.readLine();
+			if (linha.split(";")[0].equals(idSessao)) {
+				idEncontrado = false;
+				break;
+			}
+		}
+		
+		if (!idEncontrado){
+			if (!arquivoVazio){
+				throw new EasyAcceptException("Sessão inexistente");
+			}
+		}
 	}
 
 }

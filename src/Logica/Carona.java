@@ -1,5 +1,13 @@
 package Logica;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import org.hamcrest.core.IsNull;
+
 import Util.IdCaronaSingleton;
 import easyaccept.EasyAcceptException;
 
@@ -11,8 +19,26 @@ public class Carona {
 	private String horaDaSaida;
 	private int vagasDisponiveis; 
 	private FachadaDados fachadaDados;
+	private Perfil perfil = new Perfil();
 	
-	public Carona(int idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception{
+		if (idSessao == null || idSessao.equals("")){
+			throw new EasyAcceptException("Sessão inválida");
+		}
+		
+		validaData(data);
+		
+		
+		if (!validaHora(horaDaSaida)){
+			throw new EasyAcceptException("Hora inválida");
+		}
+		
+		if (Integer.toString(vagasDisponiveis) == null){
+			throw new EasyAcceptException("Vaga inválida");
+		}
+		
+		perfil.idSessaoCadastrado(idSessao);
+		
 		setLocalOrigem(localOrigem);
 		setLocalDestino(localDestino);
 		setData(data);
@@ -86,4 +112,34 @@ public class Carona {
 		return fachadaDados.getAtributoCarona(idCarona, atributo);
 	}
 	
+	private boolean validaHora(String hora){  
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");  
+        sdf.setLenient(false);  
+        try{  
+            sdf.parse(hora);  
+        }catch(Exception e){  
+            return false;  
+        }  
+        return true;  
+    } 
+	
+	private void validaData(String data) throws Exception{
+		DateFormat formatador = new SimpleDateFormat ("dd/MM/yyyy");  
+		formatador.setLenient (false);
+
+		
+		try {  
+			formatador.parse(data);  
+		} catch (Exception ex) {  
+		   throw new EasyAcceptException("Data inválida");
+		}
+		
+		Date dtAgora = new Date();		
+		formatador.format(dtAgora);
+		Date minhaData = formatador.parse(data);
+		
+		if (dtAgora.after(minhaData)){
+			throw new EasyAcceptException("Data inválida");
+		}
+	}
 }

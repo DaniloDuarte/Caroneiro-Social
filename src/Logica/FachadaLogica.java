@@ -1,11 +1,5 @@
 package Logica;
 
-import java.sql.Time;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
 public class FachadaLogica {
 	private Usuario pessoa;
 	private FachadaDados fachadaDados = new FachadaDados();
@@ -50,7 +44,7 @@ public class FachadaLogica {
 		return fachadaDados.localizarCarona(idCarona, origem, destino);
 	}
 
-	public int cadastrarCarona(int idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception {
+	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception {
 		return pessoa.cadastrarCarona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 	}
 
@@ -70,5 +64,8 @@ public class FachadaLogica {
 		return fachadaDados.getCarona(idCarona);
 	}
 
-	
+	public boolean encerrarSistema() {
+		return perfil.encerrarSistema();
+	}
+
 }

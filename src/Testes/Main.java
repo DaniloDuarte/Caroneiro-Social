@@ -14,7 +14,8 @@ public class Main {
               List<String> files = new ArrayList<String>();
               //Put the us1.txt file into the "test scripts" list
               //files.add("US01.txt");
-              files.add("US02.txt");
+             // files.add("US02.txt");
+              files.add("US03.txt");
   //Instantiate the Monopoly Game façade
               Controlador facade = new Controlador();
               //Instantiate EasyAccept façade

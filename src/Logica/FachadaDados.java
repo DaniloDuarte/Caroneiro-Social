@@ -1,7 +1,5 @@
 package Logica;
 
-import java.util.ArrayList;
-
 public class FachadaDados {
 	GerenciaDados gerenciaDados = new GerenciaDados();
 
@@ -56,5 +54,9 @@ public class FachadaDados {
 
 	public String getCarona(int idCarona) throws Exception {
 		return gerenciaDados.getCarona(idCarona);
+	}
+
+	public void idSessaoCadastrado(String idSessao) throws Exception {
+		gerenciaDados.idSessaoCadastrado(idSessao);
 	}
 }

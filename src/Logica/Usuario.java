@@ -1,7 +1,5 @@
 package Logica;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 
 import Util.IdSessaoSingleton;
 
@@ -14,14 +12,10 @@ public class Usuario {
 	private String nome;
 	private String email;
 	private String endereco;
-	private String telefone;
 	private ArrayList<Carona> caronas;
 	private FachadaDados fachadaDados;
 	private Carona carona;
-	private String idCarona;
-	private int contador = 1;
-	private Perfil perfil;
-	private int idUsuario;
+	private int idSessao;
 
 	public Usuario(String login, String senha, String nome, String endereco, String email) throws Exception {
 		fachadaDados = new FachadaDados();
@@ -41,7 +35,7 @@ public class Usuario {
 		
 		fachadaDados.cadastraConta(this);
 		this.caronas = new ArrayList<Carona>();
-		idUsuario = IdSessaoSingleton.getId();
+		idSessao = IdSessaoSingleton.getId();
 	}
 	
 	public Usuario(String login, String nome, String endereco, String email) throws Exception {
@@ -64,12 +58,13 @@ public class Usuario {
 		caronas.add(carona);
 	}
 
-	public int cadastrarCarona(int idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, int vagasDisponiveis) throws Exception{
+	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception{
+		if (vagasDisponiveis == null){
+			throw new EasyAcceptException("Vaga inválida");
+		}
+		
 		carona = new Carona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 		fachadaDados.cadastrarCarona(this, carona);
-		
-		//caronas.add(carona);
-		
 		
 		return carona.getIdCarona();
 	}
@@ -139,7 +134,7 @@ public class Usuario {
 	}
 	
 	public int getIdSessao(){
-		return idUsuario;
+		return idSessao;
 	}
 
 }
