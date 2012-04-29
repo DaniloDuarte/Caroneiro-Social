@@ -2,12 +2,7 @@ package Logica;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-
-import org.hamcrest.core.IsNull;
-
 import Util.IdCaronaSingleton;
 import easyaccept.EasyAcceptException;
 
@@ -17,13 +12,23 @@ public class Carona {
 	private String localDestino;
 	private String data;
 	private String horaDaSaida;
-	private int vagasDisponiveis; 
+	private String vagasDisponiveis; 
 	private FachadaDados fachadaDados;
 	private Perfil perfil = new Perfil();
 	
-	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception{
+	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
 		if (idSessao == null || idSessao.equals("")){
 			throw new EasyAcceptException("Sessão inválida");
+		}
+		
+		if (vagasDisponiveis == null){
+			throw new EasyAcceptException("Vaga inválida");
+		}
+		
+		try {
+			Integer.parseInt(vagasDisponiveis);
+		} catch (Exception e) {
+			throw new EasyAcceptException("Vaga inválida");
 		}
 		
 		validaData(data);
@@ -89,22 +94,22 @@ public class Carona {
 		this.horaDaSaida = horaDaSaida;
 	}
 
-	public int getVagasDisponiveis() {
+	public String getVagasDisponiveis() {
 		return vagasDisponiveis;
 	}
 
-	public void setVagasDisponiveis(int vagasDisponiveis2) throws EasyAcceptException {
+	public void setVagasDisponiveis(String vagasDisponiveis) throws EasyAcceptException {
 		//if (vagasDisponiveis2 == null || vagasDisponiveis2.equals("")){
 	//		throw new EasyAcceptException("Vaga inválida");
 	//	}
-		this.vagasDisponiveis = vagasDisponiveis2;
+		this.vagasDisponiveis = vagasDisponiveis;
 	}
 
 	public int getIdCarona() {
 		return idCarona;
 	}
 
-	public String getAtributoCarona(int idCarona, String atributo) throws Exception {
+	public String getAtributoCarona(String idCarona, String atributo) throws Exception {
 		return fachadaDados.getAtributoCarona(idCarona, atributo);
 	}
 	

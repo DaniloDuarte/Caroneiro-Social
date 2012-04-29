@@ -11,13 +11,6 @@ public class FachadaLogica {
 		pessoa = new Usuario(login, senha, nome, endereco, email);
 	}
 
-	public void criarUsuario(String login, String nome, String endereco,
-			String email) throws Exception {
-		
-		pessoa = new Usuario(login, nome, endereco, email);
-
-	}
-
 	public void zerarSistema() {
 		fachadaDados.zerarSistema();
 
@@ -28,7 +21,7 @@ public class FachadaLogica {
 		return fachadaDados.getAtributoUsuario(login, atributo);
 	}
 	
-	public String getAtributoCarona(int idCarona, String atributo) throws Exception {
+	public String getAtributoCarona(String idCarona, String atributo) throws Exception {
 		return fachadaDados.getAtributoCarona(idCarona, atributo);
 	}
 	
@@ -44,7 +37,7 @@ public class FachadaLogica {
 		return fachadaDados.localizarCarona(idSessao, origem, destino);
 	}
 
-	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception {
+	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception {
 		return pessoa.cadastrarCarona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 	}
 
@@ -52,7 +45,7 @@ public class FachadaLogica {
 		return fachadaDados.getLinhasArquivo();
 	}
 
-	public String getTrajeto(int idCarona) throws Exception {
+	public String getTrajeto(String idCarona) throws Exception {
 		return fachadaDados.getTrajeto(idCarona);
 	}
 
@@ -60,7 +53,7 @@ public class FachadaLogica {
 		return perfil.abrirSessao(login, senha);
 	}
 
-	public String getCarona(int idCarona) throws Exception {
+	public String getCarona(String idCarona) throws Exception {
 		return fachadaDados.getCarona(idCarona);
 	}
 

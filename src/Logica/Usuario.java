@@ -15,7 +15,6 @@ public class Usuario {
 	private ArrayList<Carona> caronas;
 	private FachadaDados fachadaDados;
 	private Carona carona;
-//	private int idSessao;
 
 	public Usuario(String login, String senha, String nome, String endereco, String email) throws Exception {
 		fachadaDados = new FachadaDados();
@@ -23,9 +22,9 @@ public class Usuario {
 			throw new EasyAcceptException("Já existe um usuário com este email");
 		}
 		
-//		 if (gd.isLoginCadastrado(login)){
-//			 throw new Exception("Já existe um usuário com este login");
-//		 }
+		 if (fachadaDados.isLoginCadastrado(login)){
+			 throw new Exception("Já existe um usuário com este login");
+		 }
 		
 		setLogin(login);
 		setSenha(senha);
@@ -35,30 +34,9 @@ public class Usuario {
 		
 		fachadaDados.cadastraConta(this);
 		this.caronas = new ArrayList<Carona>();
-	//	idSessao = 0;//IdSessaoSingleton.getId();
 	}
 	
-	public Usuario(String login, String nome, String endereco, String email) throws Exception {
-		fachadaDados = new FachadaDados();
-		if (fachadaDados.isEmailCadastrado(email)) {
-			throw new EasyAcceptException("Já existe um usuário com este email");
-		}
-		
-//		 if (gd.isLoginCadastrado(login)){
-//			 throw new Exception("Já existe um usuário com este login");
-//		 }
-		
-		setLogin(login);
-		setNome(nome);
-		setEndereco(endereco);
-		setEmail(email);
-		
-		fachadaDados.cadastraConta(this);
-		this.caronas = new ArrayList<Carona>();
-		caronas.add(carona);
-	}
-
-	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, Integer vagasDisponiveis) throws Exception{
+	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
 		carona = new Carona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 		fachadaDados.cadastrarCarona(this, carona);
 		
@@ -86,9 +64,9 @@ public class Usuario {
 	}
 	
 	public void setSenha(String senha) throws EasyAcceptException{
-//		if (senha == null || senha.equals("")){
-//			throw new EasyAcceptException("senha invalido!");
-//		}
+		if (senha == null || senha.equals("")){
+			throw new EasyAcceptException("Senha inválida");
+		}
 		this.senha = senha;
 	}
 	
@@ -129,8 +107,4 @@ public class Usuario {
 		return caronas;
 	}
 	
-//	public int getIdSessao(){
-//		return idSessao;
-//	}
-
 }
