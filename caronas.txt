@@ -1,6 +1,0 @@
-6;mark;6;Cajazeiras;Patos;20/07/2012;14:00;4
-6;mark;7;São Francisco;Palo Alto;12/09/2012;21:00;2
-6;mark;8;Campina Grande;João Pessoa;01/06/2012;12:00;1
-6;mark;9;Campina Grande;João Pessoa;02/06/2012;12:00;3
-6;mark;10;Campina Grande;João Pessoa;04/06/2012;16:00;2
-6;mark;11;Leeds;Londres;10/02/2013;10:00;3
