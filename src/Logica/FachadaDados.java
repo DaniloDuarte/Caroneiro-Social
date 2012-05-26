@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public class FachadaDados implements Serializable{
-	GerenciaDados gerenciaDados = new GerenciaDados();
+	GerenciaDadosTxt gerenciaDados = new GerenciaDadosTxt();
 
 	public String getAtributoUsuario(String login, String atributo) throws Exception {
 		return gerenciaDados.getAtributoUsuario(login, atributo);

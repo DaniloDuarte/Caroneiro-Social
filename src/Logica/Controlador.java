@@ -2,9 +2,14 @@ package Logica;
 
 import java.io.Serializable;
 
+import easyaccept.EasyAcceptException;
+
+
 public class Controlador implements Serializable{
 	private FachadaLogica fachadaLogica = new FachadaLogica();
 	private RepositorioDeUsuarios repositorioDeUsuarios;
+	private boolean sistemaAberto = false;
+	private static int idSessao = 0;
 
 	public Controlador() {
 		repositorioDeUsuarios = RepositorioDeUsuarios.getInstance();
@@ -24,15 +29,73 @@ public class Controlador implements Serializable{
 	}
 
 	public int abrirSessao(String login, String senha) throws Exception{
-		return fachadaLogica.abrirSessao(login, senha);
+		if (login == null || login.equals("")) {
+			throw new EasyAcceptException("Login inválido");
+		}
+		
+		if (!repositorioDeUsuarios.getRepositorioUsuario().containsKey(login)) {
+			throw new EasyAcceptException("Usuário inexistente");
+		}
+
+		validaSenha(login, senha);
+		
+		sistemaAberto = true;
+		// idSessao = "sessao" + login.substring(0, 1).toUpperCase() +
+		// login.substring(1, login.length());
+		return ++idSessao;
+	}
+
+	private void validaSenha(String login, String senha) throws Exception {
+		boolean valida = false;
+		if (repositorioDeUsuarios.getRepositorioUsuario().containsKey(login)){
+			for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario().values()){
+				if (usuario.getSenha().equals(senha)){
+					valida = true;
+					break;
+				}
+			}
+		}
+
+		if (!valida){
+			throw new Exception("Login inválido");
+		}
+		
 	}
 
 	public void encerrarSessao(String login){
-		fachadaLogica.encerrarSessao(login);
+		sistemaAberto = false;
 	}
 
 	public String getAtributoUsuario(String login, String atributo) throws Exception{
-		return fachadaLogica.getAtributoUsuario(login, atributo);
+	//	return fachadaLogica.getAtributoUsuario(login, atributo);
+		String resposta = "";
+		
+		if (login == null || login.equals("")) {
+			throw new Exception("Login inválido");
+		}
+
+		if (atributo == null || atributo.equals("")) {
+			throw new Exception("Atributo inválido");
+		}
+
+		if (!repositorioDeUsuarios.getRepositorioUsuario().containsKey(login)) {
+			throw new Exception("Usuário inexistente");
+		}
+
+		if (!atributo.equals("nome") && !atributo.equals("endereco")) {
+			throw new Exception("Atributo inexistente");
+		}
+		
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario().values()){
+			if (usuario.getLogin().equals(login)){
+				if (atributo.equals("nome")){
+					resposta = usuario.getNome();
+				}else{
+					resposta = usuario.getEndereco();
+				}
+			}
+		}
+		return resposta;
 	}
 
 	public String getAtributoCarona(String idCarona, String atributo) throws Exception{
@@ -56,7 +119,11 @@ public class Controlador implements Serializable{
 	}
 
 	public boolean encerrarSistema(){
-		return fachadaLogica.encerrarSistema();
+		if (sistemaAberto) {
+			sistemaAberto = false;
+			return true;
+		}
+		return false;
 	}
 
 	public String sugerirPontoEncontro(String idSessao, String idCarona, String pontos){

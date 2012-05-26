@@ -13,7 +13,7 @@ import java.util.Date;
 
 import easyaccept.EasyAcceptException;
 
-public class GerenciaDados implements Serializable{
+public class GerenciaDadosTxt implements Serializable{
 
 	public void cadastraConta(Usuario pessoa) throws FileNotFoundException, IOException {
 		/*ObjectOutputStream writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("contas.txt", true)));
@@ -62,12 +62,13 @@ public class GerenciaDados implements Serializable{
 			// if (linha.split(";")[0].trim().equals(usuario.getLogin())){
 			// //TODO Se usuario cadastrado fazer algo.
 			// }
-			texto = Sistema.getIdSessao() + ";" + usuario.getLogin() + ";"
+			
+		/*	texto = Sistema.getIdSessao() + ";" + usuario.getLogin() + ";"
 					+ carona.getIdCarona() + ";" + carona.getLocalOrigem()
 					+ ";" + carona.getLocalDestino() + ";" + carona.getData()
 					+ ";" + carona.getHoraDaSaida() + ";"
 					+ carona.getVagasDisponiveis() + "\n";
-			fos.write(texto.getBytes());
+			fos.write(texto.getBytes());*/
 
 			fos.close();
 		} catch (FileNotFoundException e) {

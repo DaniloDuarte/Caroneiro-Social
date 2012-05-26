@@ -23,23 +23,20 @@ public class Usuario implements Serializable{
 	}
 	public Usuario(String login, String senha, String nome, String endereco, String email) throws Exception {
 		fachadaDados = new FachadaDados();
-		if (fachadaDados.isEmailCadastrado(email)) {
+	/*	if (fachadaDados.isEmailCadastrado(email)) {
 			throw new EasyAcceptException("Já existe um usuário com este email");
 		}
 
 		 if (fachadaDados.isLoginCadastrado(login)){
 			 throw new Exception("Já existe um usuário com este login");
 		 }
-
+		 validaDadosUsuario(login, email);*/
+		 
 		setLogin(login);
 		setSenha(senha);
 		setNome(nome);
 		setEndereco(endereco);
 		setEmail(email);
-		usuarios.add("aaa");
-		usuarios.add("bbb");
-		fachadaDados.cadastraConta(this);
-		this.caronas = new ArrayList<Carona>();
 	}
 
 	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{

@@ -28,10 +28,6 @@ public class FachadaLogica implements Serializable{
 		return fachadaDados.getAtributoCarona(idCarona, atributo);
 	}
 
-	public boolean isLoginCadastrado(String login) throws Exception {
-		return fachadaDados.isLoginCadastrado(login);
-	}
-
 	public boolean isSenhaValida(String login, String senha) throws Exception {
 		return fachadaDados.isSenhaValida(login, senha);
 	}
@@ -52,21 +48,17 @@ public class FachadaLogica implements Serializable{
 		return fachadaDados.getTrajeto(idCarona);
 	}
 
-	public int abrirSessao(String login, String senha) throws Exception {
+/*	public int abrirSessao(String login, String senha) throws Exception {
 		return sistema.abrirSessao(login, senha);
-	}
+	}*/
 
 	public String getCarona(String idCarona) throws Exception {
 		return fachadaDados.getCarona(idCarona);
 	}
 
-	public boolean encerrarSistema() {
-		return sistema.encerrarSistema();
-	}
-
-	public void encerrarSessao(String login) {
+/*	public void encerrarSessao(String login) {
 		sistema.encerrarSessao(login);
-	}
+	}*/
 
 	public String sugerirPontoEncontro(String idSessao, String idCarona,
 			String pontos) {
