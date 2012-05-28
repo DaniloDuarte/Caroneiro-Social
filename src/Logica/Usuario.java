@@ -1,6 +1,7 @@
 package Logica;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 
 import easyaccept.EasyAcceptException;
@@ -12,9 +13,10 @@ public class Usuario implements Serializable{
 	private String nome;
 	private String email;
 	private String endereco;
-	private ArrayList<Carona> caronas;
+	private List<Carona> caronas;
 	private FachadaDados fachadaDados;
 	private Carona carona;
+	private String UltimoIdSessao = "";
 	
 	private ArrayList<String> usuarios = new ArrayList<String>();
 	
@@ -31,7 +33,8 @@ public class Usuario implements Serializable{
 			 throw new Exception("Já existe um usuário com este login");
 		 }
 		 validaDadosUsuario(login, email);*/
-		 
+		caronas = new ArrayList<Carona>(); 
+		
 		setLogin(login);
 		setSenha(senha);
 		setNome(nome);
@@ -41,8 +44,9 @@ public class Usuario implements Serializable{
 
 	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
 		carona = new Carona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
-		fachadaDados.cadastrarCarona(this, carona);
-
+		//fachadaDados.cadastrarCarona(this, carona);
+		caronas.add(carona);
+		
 		return carona.getIdCarona();
 	}
 
@@ -106,12 +110,20 @@ public class Usuario implements Serializable{
 		this.endereco = endereco;
 	}
 
-	public ArrayList<Carona> getCaronas() {
+	public List<Carona> getCaronas() {
 		return caronas;
 	}
 	
 	public ArrayList<String> getUsuarios(){
 		return usuarios;
+	}
+	
+	public String getUltimoIdSessao() {
+		return UltimoIdSessao;
+	}
+	
+	protected void setUltimoIdSessao(String ultimoIdSessao) {
+		UltimoIdSessao = ultimoIdSessao;
 	}
 
 }

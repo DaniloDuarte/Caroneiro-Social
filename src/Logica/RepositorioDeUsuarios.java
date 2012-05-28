@@ -36,5 +36,9 @@ public class RepositorioDeUsuarios {
 	public AbstractMap<String, Usuario> getRepositorioUsuario() {
 		return repositorioUsuario;
 	}
+	
+	public void zerarSistema(){
+		repositorioUsuario.clear();
+	}
 
 }
