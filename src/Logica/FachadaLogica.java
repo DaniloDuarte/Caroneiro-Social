@@ -36,7 +36,7 @@ public class FachadaLogica implements Serializable{
 		return fachadaDados.localizarCarona(idSessao, origem, destino);
 	}
 
-	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception {
+	public String cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception {
 		return pessoa.cadastrarCarona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 	}
 

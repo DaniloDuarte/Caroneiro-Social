@@ -5,7 +5,10 @@ import java.io.FileReader;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import easyaccept.EasyAcceptException;
 
@@ -14,6 +17,9 @@ public class Controlador implements Serializable {
 	private RepositorioDeUsuarios repositorioDeUsuarios;
 	private boolean sistemaAberto = false;
 	protected static int idSessao = 0;
+	protected static int idSugestao = 0;
+	protected static int idSolicitacao = 0;
+	protected static int idRespostaSugestao = 0;
 
 	public Controlador() {
 		repositorioDeUsuarios = RepositorioDeUsuarios.getInstance();
@@ -26,15 +32,14 @@ public class Controlador implements Serializable {
 		repositorioDeUsuarios.addUsuario(login, usuario);
 	}
 
-	public int cadastrarCarona(String idSessao, String localOrigem,
+	public String cadastrarCarona(String idSessao, String localOrigem,
 			String localDestino, String data, String horaDaSaida,
 			String vagasDisponiveis) throws Exception {
-		
-		int idCarona = fachadaLogica.cadastrarCarona(idSessao, localOrigem,
+
+		String idCarona = fachadaLogica.cadastrarCarona(idSessao, localOrigem,
 				localDestino, data, horaDaSaida, vagasDisponiveis);
-		
+
 		isSessaoExistente(idSessao);
-		
 
 		return idCarona;
 
@@ -53,7 +58,7 @@ public class Controlador implements Serializable {
 		if (!idExiste) {
 			throw new Exception("Sessão inexistente");
 		}
-		
+
 	}
 
 	public void zerarSistema() {
@@ -146,7 +151,7 @@ public class Controlador implements Serializable {
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
-				if (carona.getIdCarona() == Integer.parseInt(idCarona)) {
+				if (carona.getIdCarona().equals(idCarona)) {
 					resposta = true;
 				}
 			}
@@ -160,7 +165,11 @@ public class Controlador implements Serializable {
 		if (idCarona == null || idCarona.equals("")) {
 			throw new EasyAcceptException("Identificador do carona é inválido");
 		}
-		if (!idCaronaCadastrado(idCarona)) {
+		try {
+			if (!idCaronaCadastrado(idCarona)) {
+				throw new EasyAcceptException("Item inexistente");
+			}
+		} catch (Exception e) {
 			throw new EasyAcceptException("Item inexistente");
 		}
 
@@ -177,7 +186,7 @@ public class Controlador implements Serializable {
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
-				if (carona.getIdCarona() == Integer.parseInt(idCarona)) {
+				if (carona.getIdCarona().equals(idCarona)) {
 					if (atributo.equals("origem")) {
 						resposta = carona.getLocalOrigem();
 					} else if (atributo.equals("destino")) {
@@ -259,7 +268,11 @@ public class Controlador implements Serializable {
 			throw new EasyAcceptException("Trajeto Inválido");
 		}
 
-		if (!idCaronaCadastrado(idCarona)) {
+		try {
+			if (!idCaronaCadastrado(idCarona)) {
+				throw new EasyAcceptException("Trajeto Inexistente");
+			}
+		} catch (Exception e) {
 			throw new EasyAcceptException("Trajeto Inexistente");
 		}
 
@@ -267,7 +280,7 @@ public class Controlador implements Serializable {
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
-				if (carona.getIdCarona() == Integer.parseInt(idCarona)) {
+				if (carona.getIdCarona().equals(idCarona)) {
 					resposta = carona.getLocalOrigem() + " - "
 							+ carona.getLocalDestino();
 				}
@@ -281,8 +294,11 @@ public class Controlador implements Serializable {
 		if (idCarona == null) {
 			throw new EasyAcceptException("Carona Inválida");
 		}
-
-		if (!idCaronaCadastrado(idCarona)) {
+		try {
+			if (!idCaronaCadastrado(idCarona)) {
+				throw new EasyAcceptException("Carona Inexistente");
+			}
+		} catch (Exception e) {
 			throw new EasyAcceptException("Carona Inexistente");
 		}
 
@@ -290,7 +306,8 @@ public class Controlador implements Serializable {
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
-				if (carona.getIdCarona() == Integer.parseInt(idCarona)) {
+
+				if (carona.getIdCarona().equals(idCarona)) {
 					resposta = carona.getLocalOrigem() + " para "
 							+ carona.getLocalDestino() + ", no dia "
 							+ carona.getData() + ", as "
@@ -310,8 +327,170 @@ public class Controlador implements Serializable {
 		return false;
 	}
 
-	public String sugerirPontoEncontro(String idSessao, String idCarona,
-			String pontos) {
-		return fachadaLogica.sugerirPontoEncontro(idSessao, idCarona, pontos);
+	public String sugerirPontoEncontro(String idSessao, String idCarona, String pontos) throws Exception {
+		if (pontos.equals("")){
+			throw new EasyAcceptException("Ponto Inválido");
+		}
+		
+		if (pontos.equals(null)){
+			throw new EasyAcceptException("Ponto Inválido");
+		}
+		
+		if ( pontoJaExistente(idSessao, idCarona, pontos)){
+			throw new EasyAcceptException("Ponto Inválido");
+		}
+		
+		idSugestao++;
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (carona.getIdCarona().equals(idCarona)) {
+					carona.getSugestoesPontoEncontro().put(idSugestao, pontos);
+				}
+			}
+		}
+		return Integer.toString(idSugestao);
 	}
+
+	private boolean pontoJaExistente(String idSessao, String idCarona, String pontos) {
+		boolean resposta = false;
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (usuario.getUltimoIdSessao().equals(idSessao) 
+						&& carona.getIdCarona().equals(Integer.parseInt(idCarona))
+						&& carona.getSugestoesPontoEncontro().containsValue(pontos)){
+					resposta = true;
+				}
+			}
+		}
+		return resposta;
+	}
+
+	public void responderSugestaoPontoEncontro(String idSessao,
+			String idCarona, String idSugestao, String pontos) throws Exception {
+		
+		if (pontos.equals("")){
+			throw new EasyAcceptException("Ponto Inválido");
+		}
+		if (pontos.equals(null)){
+			throw new EasyAcceptException("Ponto Inválido");
+		}
+		if ( pontoJaExistente(idSessao, idCarona, pontos)){
+			throw new EasyAcceptException("Ponto Inválido");
+		}
+		
+		idRespostaSugestao++;
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (carona.getIdCarona().equals(idCarona)
+						&& carona.getSugestoesPontoEncontro().containsKey(Integer.parseInt(idSugestao))
+						&& carona.getSugestoesPontoEncontro().get(Integer.parseInt(idSugestao)).split(";")[0].equals(pontos.split(";")[0])) {
+					// add numa lista as aceitas e remover do mapa
+					// sugestoesPontoEncontro.
+					carona.getRespostasSugestoesPontoEncontro().add(pontos);
+					carona.getSugestoesPontoEncontro().remove(Integer.parseInt(idSugestao));
+				}
+
+			}
+		}
+	}
+
+	public String solicitarVagaPontoEncontro(String idSessao, String idCarona,
+			String ponto) {
+		String nome = "";
+		idSolicitacao++;
+		
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario().values()) {
+			if (usuario.getUltimoIdSessao().equals(idSessao)){
+				nome = usuario.getNome();
+			}
+			for (Carona carona : usuario.getCaronas()) {
+				if (carona.getIdCarona().equals(idCarona)){
+					for (int i = 0; i < carona.getRespostasSugestoesPontoEncontro().size(); i++){
+						if (carona.getRespostasSugestoesPontoEncontro().get(i).split(";")[0].equals(ponto)){
+							carona.getDonosSolicitacoesVagaPontoEncontro().put(idSolicitacao, nome);
+							carona.getSolicitacaoVagaPontoEncontro().put(idSolicitacao, ponto);
+						}
+					}
+				}
+			}
+		}
+		return Integer.toString(idSolicitacao);
+	}
+	
+	public void aceitarSolicitacaoPontoEncontro(String idSessao, String idSolicitacao) throws Exception{
+		if (idSolicitacao == null || idSolicitacao == ""){
+			throw new EasyAcceptException("ID inválido");
+		}
+		if (idSolicitacaoInexistente(idSolicitacao)){
+			throw new EasyAcceptException("Solicitação inexistente");
+		}
+		
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(Integer.parseInt(idSolicitacao))) {
+					int novaQntVagas = Integer.parseInt(carona.getVagasDisponiveis()) - 1;
+					carona.setVagasDisponiveis(Integer.toString(novaQntVagas));
+					carona.getSolicitacoesPontoEncontroAceitas().put(Integer.parseInt(idSolicitacao), carona.getSolicitacaoVagaPontoEncontro().get(Integer.parseInt(idSolicitacao)));
+					carona.getSolicitacaoVagaPontoEncontro().remove(Integer.parseInt(idSolicitacao));
+				}
+			}
+		}
+	}
+
+	public String getAtributoSolicitacao(String idSolicitacao, String atributo) throws Exception {
+		String resposta = "";
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(Integer.parseInt(idSolicitacao))){
+					if (atributo.equals("origem")) {
+						resposta = carona.getLocalOrigem();
+					} else if (atributo.equals("destino")) {
+						resposta = carona.getLocalDestino();
+					} else if (atributo.equals("Dono da carona")) {
+						resposta = usuario.getNome();
+					} else if (atributo.equals("Dono da solicitacao")) {
+						resposta = carona.getDonosSolicitacoesVagaPontoEncontro().get(Integer.parseInt(idSolicitacao));
+					}else if (atributo.equals("Ponto de Encontro")) {
+						resposta = carona.getSolicitacaoVagaPontoEncontro().get(Integer.parseInt(idSolicitacao));
+					}
+				}
+			}
+		}
+		return resposta;
+	}
+	
+	public boolean idSolicitacaoInexistente(String idSolicitacao){
+		boolean resposta = true;
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario().values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(Integer.parseInt(idSolicitacao))){
+					resposta = false;
+				}
+			}
+		}
+		return resposta;
+	}
+	
+	public void desistirRequisicao(String idSessao, String idCarona, String idSugestao){
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (usuario.getUltimoIdSessao().equals(idSessao) 
+						&& carona.getIdCarona().equals(Integer.parseInt(idCarona))
+						&& carona.getSugestoesPontoEncontro().containsKey(Integer.parseInt(idSugestao))){
+					carona.getSugestoesPontoEncontro().remove(idSugestao);
+				}
+			}
+		}
+	}
+	
+	public String solicitarVaga(String idSessao, String idCarona){
+		return Integer.toString(idSolicitacao);
+	}
+
 }

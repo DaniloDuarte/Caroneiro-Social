@@ -3,12 +3,17 @@ package Logica;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
+
 import Util.IdCaronaSingleton;
 import easyaccept.EasyAcceptException;
 
 public class Carona implements Serializable{
-	private int idCarona;
+	private int idCarona = 0;
 	private String localOrigem;
 	private String localDestino;
 	private String data;
@@ -16,6 +21,11 @@ public class Carona implements Serializable{
 	private String vagasDisponiveis; 
 	private FachadaDados fachadaDados;
 	private Sistema sistema = new Sistema();
+	private AbstractMap<Integer, String> sugestoesPontoEncontro = new TreeMap<Integer, String>();
+	private List<String> respostasSugestoesPontoEncontro = new ArrayList<String>();
+	private AbstractMap<Integer, String> solicitacaoVagaPontoEncontro = new TreeMap<Integer, String>();
+	private AbstractMap<Integer, String> solicitacoesPontoEncontroAceitas = new TreeMap<Integer, String>();
+	private AbstractMap<Integer, String> donosSolicitacoesVagaPontoEncontro = new TreeMap<Integer, String>();
 
 	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
 		if (idSessao == null || idSessao.equals("")){
@@ -106,8 +116,8 @@ public class Carona implements Serializable{
 		this.vagasDisponiveis = vagasDisponiveis;
 	}
 
-	public int getIdCarona() {
-		return idCarona;
+	public String getIdCarona() {
+		return Integer.toString(idCarona);
 	}
 
 	public String getAtributoCarona(String idCarona, String atributo) throws Exception {
@@ -143,5 +153,25 @@ public class Carona implements Serializable{
 		if (dtAgora.after(minhaData)){
 			throw new EasyAcceptException("Data inválida");
 		}
+	}
+	
+	public AbstractMap<Integer, String> getSugestoesPontoEncontro() {
+		return sugestoesPontoEncontro;
+	}
+	
+	public List<String> getRespostasSugestoesPontoEncontro() {
+		return respostasSugestoesPontoEncontro;
+	}
+
+	public AbstractMap<Integer, String> getSolicitacaoVagaPontoEncontro() {
+		return solicitacaoVagaPontoEncontro;
+	}
+	
+	public AbstractMap<Integer, String> getSolicitacoesPontoEncontroAceitas() {
+		return solicitacoesPontoEncontroAceitas;
+	}
+
+	public AbstractMap<Integer, String> getDonosSolicitacoesVagaPontoEncontro() {
+		return donosSolicitacoesVagaPontoEncontro;
 	}
 }

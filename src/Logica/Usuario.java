@@ -42,7 +42,7 @@ public class Usuario implements Serializable{
 		setEmail(email);
 	}
 
-	public int cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
+	public String cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
 		carona = new Carona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 		//fachadaDados.cadastrarCarona(this, carona);
 		caronas.add(carona);
