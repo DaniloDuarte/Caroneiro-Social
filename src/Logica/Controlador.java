@@ -513,26 +513,59 @@ public class Controlador implements Serializable {
 	public String solicitarVaga(String idSessao, String idCarona)
 			throws Exception {
 		idSolicitacao++;
+		String nome = "";
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
+			if (usuario.getUltimoIdSessao().equals(idSessao)){
+				nome = usuario.getNome();
+			}
 			for (Carona carona : usuario.getCaronas()) {
 				if (carona.getIdCarona().equals(idCarona)) {
-					int novaQntVagas = Integer.parseInt(carona.getVagasDisponiveis()) - 1;
-					carona.setVagasDisponiveis(Integer.toString(novaQntVagas));
+					carona.getDonosSolicitacoesVagaPontoEncontro().put(idSolicitacao, nome);
 					carona.getSolicitacaoVagaPontoEncontro().put(idSolicitacao, carona);
+					carona.getHistoricoSolicitacao().put(idSolicitacao, carona);
 				}
 			}
+			
 
 		}
 		return Integer.toString(idSolicitacao);
 	}
 	
-	public void rejeitarRequisicao(String idSessao, String idSolicitacao){
+	public void aceitarSolicitacao(String idSessao, String idSolicitacao) throws Exception{
+		if (idSolicitacao.equals(null) || idSolicitacao.equals("")) {
+			throw new EasyAcceptException("ID inválido");
+		}
+		if (idSolicitacaoInexistente(idSolicitacao)) {
+			throw new EasyAcceptException("Solicitação inexistente");
+		}
+
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(
+						Integer.parseInt(idSolicitacao))) {
+					int novaQntVagas = Integer.parseInt(carona.getVagasDisponiveis()) - 1;
+					carona.setVagasDisponiveis(Integer.toString(novaQntVagas));
+					carona.getSolicitacaoVagaPontoEncontro().remove(Integer.parseInt(idSolicitacao));
+				}
+			}
+		}
+	}
+	
+	public void rejeitarSolicitacao(String idSessao, String idSolicitacao) throws Exception{
+		if (idSolicitacao.equals(null) || idSolicitacao.equals("")) {
+			throw new EasyAcceptException("ID inválido");
+		}
+		if (idSolicitacaoInexistente(idSolicitacao)) {
+			throw new EasyAcceptException("Solicitação inexistente");
+		}
+		
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
 				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(Integer.parseInt(idSolicitacao))) {
-					carona.getSugestoesPontoEncontro().remove(Integer.parseInt(idSolicitacao));
+					carona.getSolicitacaoVagaPontoEncontro().remove(Integer.parseInt(idSolicitacao));
 				}
 			}
 		}
