@@ -327,19 +327,20 @@ public class Controlador implements Serializable {
 		return false;
 	}
 
-	public String sugerirPontoEncontro(String idSessao, String idCarona, String pontos) throws Exception {
-		if (pontos.equals("")){
+	public String sugerirPontoEncontro(String idSessao, String idCarona,
+			String pontos) throws Exception {
+		if (pontos.equals("")) {
 			throw new EasyAcceptException("Ponto Inválido");
 		}
-		
-		if (pontos.equals(null)){
+
+		if (pontos.equals(null)) {
 			throw new EasyAcceptException("Ponto Inválido");
 		}
-		
-		if ( pontoJaExistente(idSessao, idCarona, pontos)){
+
+		if (pontoJaExistente(idSessao, idCarona, pontos)) {
 			throw new EasyAcceptException("Ponto Inválido");
 		}
-		
+
 		idSugestao++;
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
@@ -352,14 +353,17 @@ public class Controlador implements Serializable {
 		return Integer.toString(idSugestao);
 	}
 
-	private boolean pontoJaExistente(String idSessao, String idCarona, String pontos) {
+	private boolean pontoJaExistente(String idSessao, String idCarona,
+			String pontos) {
 		boolean resposta = false;
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
-				if (usuario.getUltimoIdSessao().equals(idSessao) 
-						&& carona.getIdCarona().equals(Integer.parseInt(idCarona))
-						&& carona.getSugestoesPontoEncontro().containsValue(pontos)){
+				if (usuario.getUltimoIdSessao().equals(idSessao)
+						&& carona.getIdCarona().equals(
+								Integer.parseInt(idCarona))
+						&& carona.getSugestoesPontoEncontro().containsValue(
+								pontos)) {
 					resposta = true;
 				}
 			}
@@ -369,24 +373,27 @@ public class Controlador implements Serializable {
 
 	public void responderSugestaoPontoEncontro(String idSessao,
 			String idCarona, String idSugestao, String pontos) throws Exception {
-		
-		if (pontos.equals("")){
+
+		if (pontos.equals("")) {
 			throw new EasyAcceptException("Ponto Inválido");
 		}
-		if (pontos.equals(null)){
+		if (pontos.equals(null)) {
 			throw new EasyAcceptException("Ponto Inválido");
 		}
-		if ( pontoJaExistente(idSessao, idCarona, pontos)){
+		if (pontoJaExistente(idSessao, idCarona, pontos)) {
 			throw new EasyAcceptException("Ponto Inválido");
 		}
-		
+
 		idRespostaSugestao++;
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
 				if (carona.getIdCarona().equals(idCarona)
-						&& carona.getSugestoesPontoEncontro().containsKey(Integer.parseInt(idSugestao))
-						&& carona.getSugestoesPontoEncontro().get(Integer.parseInt(idSugestao)).split(";")[0].equals(pontos.split(";")[0])) {
+						&& carona.getSugestoesPontoEncontro().containsKey(
+								Integer.parseInt(idSugestao))
+						&& carona.getSugestoesPontoEncontro()
+								.get(Integer.parseInt(idSugestao)).split(";")[0]
+								.equals(pontos.split(";")[0])) {
 					// add numa lista as aceitas e remover do mapa
 					// sugestoesPontoEncontro.
 					carona.getRespostasSugestoesPontoEncontro().add(pontos);
@@ -401,17 +408,21 @@ public class Controlador implements Serializable {
 			String ponto) {
 		String nome = "";
 		idSolicitacao++;
-		
-		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario().values()) {
-			if (usuario.getUltimoIdSessao().equals(idSessao)){
+
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			if (usuario.getUltimoIdSessao().equals(idSessao)) {
 				nome = usuario.getNome();
 			}
 			for (Carona carona : usuario.getCaronas()) {
-				if (carona.getIdCarona().equals(idCarona)){
-					for (int i = 0; i < carona.getRespostasSugestoesPontoEncontro().size(); i++){
-						if (carona.getRespostasSugestoesPontoEncontro().get(i).split(";")[0].equals(ponto)){
+				if (carona.getIdCarona().equals(idCarona)) {
+					for (int i = 0; i < carona
+							.getRespostasSugestoesPontoEncontro().size(); i++) {
+						if (carona.getRespostasSugestoesPontoEncontro().get(i).split(";")[0].equals(ponto)) {
+							carona.setPonto(ponto);
 							carona.getDonosSolicitacoesVagaPontoEncontro().put(idSolicitacao, nome);
-							carona.getSolicitacaoVagaPontoEncontro().put(idSolicitacao, ponto);
+							carona.getSolicitacaoVagaPontoEncontro().put(idSolicitacao, carona);
+							carona.getHistoricoSolicitacao().put(idSolicitacao, carona);
 						}
 					}
 				}
@@ -419,34 +430,37 @@ public class Controlador implements Serializable {
 		}
 		return Integer.toString(idSolicitacao);
 	}
-	
-	public void aceitarSolicitacaoPontoEncontro(String idSessao, String idSolicitacao) throws Exception{
-		if (idSolicitacao == null || idSolicitacao == ""){
+
+	public void aceitarSolicitacaoPontoEncontro(String idSessao,
+			String idSolicitacao) throws Exception {
+		if (idSolicitacao == null || idSolicitacao == "") {
 			throw new EasyAcceptException("ID inválido");
 		}
-		if (idSolicitacaoInexistente(idSolicitacao)){
+		if (idSolicitacaoInexistente(idSolicitacao)) {
 			throw new EasyAcceptException("Solicitação inexistente");
 		}
-		
+
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
-				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(Integer.parseInt(idSolicitacao))) {
+				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(
+						Integer.parseInt(idSolicitacao))) {
 					int novaQntVagas = Integer.parseInt(carona.getVagasDisponiveis()) - 1;
 					carona.setVagasDisponiveis(Integer.toString(novaQntVagas));
-					carona.getSolicitacoesPontoEncontroAceitas().put(Integer.parseInt(idSolicitacao), carona.getSolicitacaoVagaPontoEncontro().get(Integer.parseInt(idSolicitacao)));
+					carona.getSolicitacoesPontoEncontroAceitas().put(Integer.parseInt(idSolicitacao),carona);
 					carona.getSolicitacaoVagaPontoEncontro().remove(Integer.parseInt(idSolicitacao));
 				}
 			}
 		}
 	}
 
-	public String getAtributoSolicitacao(String idSolicitacao, String atributo) throws Exception {
+	public String getAtributoSolicitacao(String idSolicitacao, String atributo)
+			throws Exception {
 		String resposta = "";
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
-				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(Integer.parseInt(idSolicitacao))){
+				if (carona.getHistoricoSolicitacao().containsKey(Integer.parseInt(idSolicitacao))) {
 					if (atributo.equals("origem")) {
 						resposta = carona.getLocalOrigem();
 					} else if (atributo.equals("destino")) {
@@ -455,42 +469,73 @@ public class Controlador implements Serializable {
 						resposta = usuario.getNome();
 					} else if (atributo.equals("Dono da solicitacao")) {
 						resposta = carona.getDonosSolicitacoesVagaPontoEncontro().get(Integer.parseInt(idSolicitacao));
-					}else if (atributo.equals("Ponto de Encontro")) {
-						resposta = carona.getSolicitacaoVagaPontoEncontro().get(Integer.parseInt(idSolicitacao));
+					} else if (atributo.equals("Ponto de Encontro")) {
+						//System.out.println(carona.getHistoricoSolicitacao().get(Integer.parseInt(idSolicitacao)).getPonto());
+						//System.out.println();
+						resposta = carona.getHistoricoSolicitacao().get(Integer.parseInt(idSolicitacao)).getPonto();
 					}
 				}
 			}
 		}
 		return resposta;
 	}
-	
-	public boolean idSolicitacaoInexistente(String idSolicitacao){
+
+	public boolean idSolicitacaoInexistente(String idSolicitacao) {
 		boolean resposta = true;
-		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario().values()) {
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
-				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(Integer.parseInt(idSolicitacao))){
+				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(
+						Integer.parseInt(idSolicitacao))) {
 					resposta = false;
 				}
 			}
 		}
 		return resposta;
 	}
-	
-	public void desistirRequisicao(String idSessao, String idCarona, String idSugestao){
+
+	public void desistirRequisicao(String idSessao, String idCarona,
+			String idSugestao) {
 		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
 				.values()) {
 			for (Carona carona : usuario.getCaronas()) {
-				if (usuario.getUltimoIdSessao().equals(idSessao) 
-						&& carona.getIdCarona().equals(Integer.parseInt(idCarona))
-						&& carona.getSugestoesPontoEncontro().containsKey(Integer.parseInt(idSugestao))){
+				if (usuario.getUltimoIdSessao().equals(idSessao)
+						&& carona.getIdCarona().equals(
+								Integer.parseInt(idCarona))
+						&& carona.getSugestoesPontoEncontro().containsKey(
+								Integer.parseInt(idSugestao))) {
 					carona.getSugestoesPontoEncontro().remove(idSugestao);
 				}
 			}
 		}
 	}
-	
-	public String solicitarVaga(String idSessao, String idCarona){
+
+	public String solicitarVaga(String idSessao, String idCarona)
+			throws Exception {
+		idSolicitacao++;
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (carona.getIdCarona().equals(idCarona)) {
+					int novaQntVagas = Integer.parseInt(carona.getVagasDisponiveis()) - 1;
+					carona.setVagasDisponiveis(Integer.toString(novaQntVagas));
+					carona.getSolicitacaoVagaPontoEncontro().put(idSolicitacao, carona);
+				}
+			}
+
+		}
 		return Integer.toString(idSolicitacao);
+	}
+	
+	public void rejeitarRequisicao(String idSessao, String idSolicitacao){
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			for (Carona carona : usuario.getCaronas()) {
+				if (carona.getSolicitacaoVagaPontoEncontro().containsKey(Integer.parseInt(idSolicitacao))) {
+					carona.getSugestoesPontoEncontro().remove(Integer.parseInt(idSolicitacao));
+				}
+			}
+		}
 	}
 
 }

@@ -23,9 +23,12 @@ public class Carona implements Serializable{
 	private Sistema sistema = new Sistema();
 	private AbstractMap<Integer, String> sugestoesPontoEncontro = new TreeMap<Integer, String>();
 	private List<String> respostasSugestoesPontoEncontro = new ArrayList<String>();
-	private AbstractMap<Integer, String> solicitacaoVagaPontoEncontro = new TreeMap<Integer, String>();
-	private AbstractMap<Integer, String> solicitacoesPontoEncontroAceitas = new TreeMap<Integer, String>();
+	private AbstractMap<Integer, Carona> solicitacaoVagaPontoEncontro = new TreeMap<Integer, Carona>();
+	private AbstractMap<Integer, Carona> solicitacoesPontoEncontroAceitas = new TreeMap<Integer, Carona>();
 	private AbstractMap<Integer, String> donosSolicitacoesVagaPontoEncontro = new TreeMap<Integer, String>();
+	private AbstractMap<Integer, Carona> historicoSolicitacoes = new TreeMap<Integer, Carona>();
+
+	private String ponto;
 
 	public Carona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
 		if (idSessao == null || idSessao.equals("")){
@@ -163,15 +166,28 @@ public class Carona implements Serializable{
 		return respostasSugestoesPontoEncontro;
 	}
 
-	public AbstractMap<Integer, String> getSolicitacaoVagaPontoEncontro() {
+	public AbstractMap<Integer, Carona> getSolicitacaoVagaPontoEncontro() {
 		return solicitacaoVagaPontoEncontro;
 	}
 	
-	public AbstractMap<Integer, String> getSolicitacoesPontoEncontroAceitas() {
+	public AbstractMap<Integer, Carona> getSolicitacoesPontoEncontroAceitas() {
 		return solicitacoesPontoEncontroAceitas;
 	}
 
 	public AbstractMap<Integer, String> getDonosSolicitacoesVagaPontoEncontro() {
 		return donosSolicitacoesVagaPontoEncontro;
+	}
+
+	public String getPonto() {
+		return ponto;
+	}
+	
+	public String setPonto(String ponto) {
+		this.ponto = ponto;
+		return ponto;
+	}
+
+	public AbstractMap<Integer, Carona> getHistoricoSolicitacao() {
+		return historicoSolicitacoes;
 	}
 }
