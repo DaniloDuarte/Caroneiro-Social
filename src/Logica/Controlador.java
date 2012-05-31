@@ -20,6 +20,7 @@ public class Controlador implements Serializable {
 	protected static int idSugestao = 0;
 	protected static int idSolicitacao = 0;
 	protected static int idRespostaSugestao = 0;
+	private Perfil perfil = new Perfil();
 
 	public Controlador() {
 		repositorioDeUsuarios = RepositorioDeUsuarios.getInstance();
@@ -30,6 +31,7 @@ public class Controlador implements Serializable {
 		Usuario usuario = fachadaLogica.criarUsuario(login, senha, nome,
 				endereco, email);
 		repositorioDeUsuarios.addUsuario(login, usuario);
+		
 	}
 
 	public String cadastrarCarona(String idSessao, String localOrigem,
@@ -467,6 +469,7 @@ public class Controlador implements Serializable {
 						resposta = carona.getLocalDestino();
 					} else if (atributo.equals("Dono da carona")) {
 						resposta = usuario.getNome();
+						System.out.println(resposta);
 					} else if (atributo.equals("Dono da solicitacao")) {
 						resposta = carona.getDonosSolicitacoesVagaPontoEncontro().get(Integer.parseInt(idSolicitacao));
 					} else if (atributo.equals("Ponto de Encontro")) {
@@ -569,6 +572,81 @@ public class Controlador implements Serializable {
 				}
 			}
 		}
+	}
+	
+	public Perfil visualizarPerfil(String idSessao, String login) throws Exception{
+		if (!repositorioDeUsuarios.getRepositorioUsuario().containsKey(login)){
+			throw new Exception("Login inválido");
+		}
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			if (usuario.getLogin().equals(login)){
+				if (!usuario.getUltimoIdSessao().equals(idSessao)){
+					throw new Exception("Login inválido");
+				}
+				break;
+			}
+		}
+		
+		return null;
+	}
+	
+	public String getAtributoPerfil(String login, String atributo){
+		//return perfil.getAtributoPerfil(login, atributo);
+		if (!repositorioDeUsuarios.getRepositorioUsuario().containsKey(login)){
+			//EXCECAO
+		}
+		
+		Usuario usuarioRecuperado = null;
+		String resposta = "";
+		
+		for (Usuario usuario : repositorioDeUsuarios.getRepositorioUsuario()
+				.values()) {
+			if (usuario.getLogin().equals(login)){
+				usuarioRecuperado = usuario;
+				break;
+			}
+		}
+		
+		if (atributo.equals("nome")){
+			resposta = usuarioRecuperado.getNome();
+		}
+		else if(atributo.equals("endereco")){
+			resposta = usuarioRecuperado.getEndereco();
+		}
+		else if(atributo.equals("email")){
+			resposta = usuarioRecuperado.getEmail();
+		}
+		else if(atributo.equals("historico de caronas")){
+			resposta = "[";
+			int contador = 1;
+			for (Carona carona : usuarioRecuperado.getCaronas()){
+				resposta += carona.getIdCarona();
+				if (contador != usuarioRecuperado.getCaronas().size()){
+					resposta += ", ";
+				}
+				contador++;
+			}
+			
+			resposta += "]";
+		}
+		else if(atributo.equals("historico de vagas em caronas")){
+			resposta = "[]";
+		}
+		else if(atributo.equals("caronas seguras e tranquilas")){
+			resposta = "0";
+		}
+		else if(atributo.equals("caronas que não funcionaram")){
+			resposta = "0";
+		}
+		else if(atributo.equals("faltas em vagas de caronas")){
+			resposta = "0";
+		}
+		else if(atributo.equals("presenças em vagas de caronas")){
+			resposta = "0";
+		}
+		
+		return resposta;
 	}
 
 }

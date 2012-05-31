@@ -27,6 +27,7 @@ public class Carona implements Serializable{
 	private AbstractMap<Integer, Carona> solicitacoesPontoEncontroAceitas = new TreeMap<Integer, Carona>();
 	private AbstractMap<Integer, String> donosSolicitacoesVagaPontoEncontro = new TreeMap<Integer, String>();
 	private AbstractMap<Integer, Carona> historicoSolicitacoes = new TreeMap<Integer, Carona>();
+	private Usuario donoDaCarona;
 
 	private String ponto;
 
@@ -189,5 +190,13 @@ public class Carona implements Serializable{
 
 	public AbstractMap<Integer, Carona> getHistoricoSolicitacao() {
 		return historicoSolicitacoes;
+	}
+	
+	public Usuario getDonoDaCarona(){
+		return donoDaCarona;
+	}
+	
+	protected void setDonoDaCarona(Usuario usuario){
+		donoDaCarona = usuario;
 	}
 }

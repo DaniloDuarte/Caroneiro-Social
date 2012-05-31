@@ -20,6 +20,8 @@ public class Main implements Serializable{
               files.add("US03.txt");
               files.add("US04.txt");
               files.add("US05.txt");
+              files.add("US06.txt");
+              files.add("US07.txt");
 
   //Instantiate the Monopoly Game façade
               Controlador facade = new Controlador();

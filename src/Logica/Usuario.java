@@ -17,6 +17,7 @@ public class Usuario implements Serializable{
 	private FachadaDados fachadaDados;
 	private Carona carona;
 	private String UltimoIdSessao = "";
+	private Perfil perfil;
 	
 	private ArrayList<String> usuarios = new ArrayList<String>();
 	
@@ -40,12 +41,16 @@ public class Usuario implements Serializable{
 		setNome(nome);
 		setEndereco(endereco);
 		setEmail(email);
+		
 	}
 
 	public String cadastrarCarona(String idSessao,String localOrigem, String localDestino, String data, String horaDaSaida, String vagasDisponiveis) throws Exception{
 		carona = new Carona(idSessao,localOrigem, localDestino, data, horaDaSaida, vagasDisponiveis);
 		//fachadaDados.cadastrarCarona(this, carona);
 		caronas.add(carona);
+		System.out.println(this.getNome());
+	//	System.out.println(carona.getIdCarona());
+		carona.setDonoDaCarona(this);
 		
 		return carona.getIdCarona();
 	}
